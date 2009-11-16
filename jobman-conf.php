@@ -83,7 +83,7 @@ function jobman_conf() {
 function jobman_print_settings_box() {
 	$structure = get_option('permalink_structure');
 	if($structure == '') {
-		$url_before = get_option('home') . '?' . $url;
+		$url_before = get_option('home') . '/?' . $url;
 		$url_after = '=all';
 	}
 	else {
@@ -820,7 +820,7 @@ function jobman_list_applications() {
 					echo '</td>';
 					break;
 				default:
-					_e('This field cannot be filtered.', 'jobman');
+					'<td>' . __('This field cannot be filtered.', 'jobman') . '</td>';
 			}
 		}
 		echo '</tr>';
@@ -878,7 +878,7 @@ function jobman_list_applications() {
 	$sql = 'SELECT a.id AS id, a.jobid AS jobid, j.title AS jobname';
 	$join = '';
 	$filter = '';
-	if(count($fields > 0)) {
+	if(count($fields) > 0) {
 		foreach($fields as $field) {
 			$sql .= ', d' . $field['id'] . '.data AS data' . $field['id'];
 			$join .= ' LEFT JOIN ' . $wpdb->prefix . 'jobman_application_data as d' . $field['id'] . ' ON d' . $field['id'] . '.applicationid=a.id AND d' . $field['id'] . '.fieldid=' . $field['id'];
@@ -1388,8 +1388,8 @@ function jobman_print_donate_box() {
 ?>
 		<p><?php _e('If this plugin helps you find that perfect new employee, I\'d appreciate it if you shared the love, by way of my Donate or Amazon Wish List links below.', 'jobman') ?></p>
 		<ul>
-			<li><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=gary%40pento%2enet&item_name=WordPress%20Plugin%20(Job%20Manager)&item_number=Support%20Open%20Source&no_shipping=0&no_note=1&tax=0&currency_code=USD&lc=US&bn=PP%2dDonationsBF&charset=UTF%2d8"><?php _e('Donate with PayPal', 'jobman') ?></a></li>
 			<li><a href="http://www.amazon.com/wishlist/1ORKI9ZG875BL"><?php _e('My Amazon Wish List', 'jobman') ?></a></li>
+			<li><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=gary%40pento%2enet&item_name=WordPress%20Plugin%20(Job%20Manager)&item_number=Support%20Open%20Source&no_shipping=0&no_note=1&tax=0&currency_code=USD&lc=US&bn=PP%2dDonationsBF&charset=UTF%2d8"><?php _e('Donate with PayPal', 'jobman') ?></a></li>
 		</ul>
 <?php
 }
@@ -1399,7 +1399,7 @@ function jobman_print_about_box() {
 		<ul>
 			<li><a href="http://pento.net/"><?php _e('Gary Pendergast\'s Blog', 'jobman') ?></a></li>
 			<li><a href="http://twitter.com/garypendergast"><?php _e('Follow me on Twitter!', 'jobman') ?></a></li>
-			<li><a href="http://pento.net/projects/wordpress-job-manager/"><?php _e('Plugin Homepage', 'jobman') ?></a></li>
+			<li><a href="http://pento.net/projects/wordpress-job-manager-plugin/"><?php _e('Plugin Homepage', 'jobman') ?></a></li>
 			<li><a href="http://code.google.com/p/wordpress-job-manager/issues/list"><?php _e('Submit a Bug/Feature Request', 'jobman') ?></a></li>
 		</ul>
 <?php
