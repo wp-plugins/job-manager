@@ -168,7 +168,7 @@ function jobman_print_categories_box() {
 				</td>
 				<td><input class="regular-text code" type="text" name="slug[]" value="<?php echo $cat['slug'] ?>" /></td>
 				<td><input class="regular-text code" type="text" name="email[]" value="<?php echo $cat['email'] ?>" /></td>
-				<td><a href="#" onclick="jobman_delete(this, 'id', 'jobman-delete-list'); return false;"><?php _e('Delete', 'jobman') ?></a></td>
+				<td><a href="#" onclick="jobman_delete(this, 'id', 'jobman-delete-category-list'); return false;"><?php _e('Delete', 'jobman') ?></a></td>
 			</tr>
 <?php
 		}
@@ -178,13 +178,13 @@ function jobman_print_categories_box() {
 	$template .= '<input class="regular-text code" type="text" name="title[]" /></td>';
 	$template .= '<td><input class="regular-text code" type="text" name="slug[]" /></td>';
 	$template .= '<td><input class="regular-text code" type="text" name="email[]" /></td>';
-	$template .= '<td><a href="#" onclick="jobman_delete(this, \\\'id\\\', \\\'jobman-delete-list\\\'); return false;">' . __('Delete', 'jobman') . '</a></td>';
+	$template .= '<td><a href="#" onclick="jobman_delete(this, \\\'id\\\', \\\'jobman-delete-category-list\\\'); return false;">' . __('Delete', 'jobman') . '</a></td>';
 	
 	echo $template;
 ?>
 		<tr id="jobman-catnew">
 				<td colspan="4" style="text-align: right;">
-					<input type="hidden" name="jobman-delete-list" id="jobman-delete-list" value="" />
+					<input type="hidden" name="jobman-delete-list" id="jobman-delete-category-list" value="" />
 					<a href="#" onclick="jobman_new('jobman-catnew', 'category'); return false;"><?php _e('Add New Category', 'jobman') ?></a>
 				</td>
 		</table>
@@ -231,7 +231,7 @@ function jobman_print_icons_box() {
 				</td>
 				<td><input class="regular-text code" type="text" name="title[]" value="<?php echo $icon['title'] ?>" /></td>
 				<td><input class="regular-text code" type="file" name="icon[]" /></td>
-				<td><a href="#" onclick="jobman_delete(this, 'id', 'jobman-delete-list'); return false;"><?php _e('Delete', 'jobman') ?></a></td>
+				<td><a href="#" onclick="jobman_delete(this, 'id', 'jobman-delete-icon-list'); return false;"><?php _e('Delete', 'jobman') ?></a></td>
 			</tr>
 <?php
 		}
@@ -240,13 +240,13 @@ function jobman_print_icons_box() {
 	$template = '<tr><td><input type="hidden" name="id[]" value="-1" /></td>';
 	$template .= '<td><input class="regular-text code" type="text" name="title[]" /></td>';
 	$template .= '<td><input class="regular-text code" type="file" name="icon[]" /></td>';
-	$template .= '<td><a href="#" onclick="jobman_delete(this, \\\'id\\\', \\\'jobman-delete-list\\\'); return false;">' . __('Delete', 'jobman') . '</a></td>';
+	$template .= '<td><a href="#" onclick="jobman_delete(this, \\\'id\\\', \\\'jobman-delete-icon-list\\\'); return false;">' . __('Delete', 'jobman') . '</a></td>';
 	
 	echo $template;
 ?>
 		<tr id="jobman-iconnew">
 				<td colspan="4" style="text-align: right;">
-					<input type="hidden" name="jobman-delete-list" id="jobman-delete-list" value="" />
+					<input type="hidden" name="jobman-delete-list" id="jobman-delete-icon-list" value="" />
 					<a href="#" onclick="jobman_new('jobman-iconnew', 'icon'); return false;"><?php _e('Add New Icon', 'jobman') ?></a>
 				</td>
 		</table>
@@ -365,7 +365,7 @@ function jobman_print_other_plugins_box() {
 ?>
 		<p class="submit"><input type="submit" name="submit"  class="button-primary" value="<?php _e('Update Plugin Settings', 'jobman') ?>" /></p>
 	</form>
-<?
+<?php
 }
 
 function jobman_list_jobs() {
@@ -1282,8 +1282,15 @@ function jobman_categories_updatedb() {
 		}
 		else {
 			// UPDATE existing field
+			if($_REQUEST['slug'][$ii] != '') {
+				$slug = $_REQUEST['slug'][$ii];
+			}
+			else {
+				$slug = strtolower($_REQUEST['title'][$ii]);
+				$slug = str_replace(' ', '-', $slug);
+			}
 			$sql = $wpdb->prepare('UPDATE ' . $wpdb->prefix . 'jobman_categories SET title=%s, slug=%s, email=%s WHERE id=%d;',
-							$_REQUEST['title'][$ii], $_REQUEST['slug'][$ii], $_REQUEST['email'][$ii], $id);
+							$_REQUEST['title'][$ii], $slug, $_REQUEST['email'][$ii], $id);
 		}
 		
 		$wpdb->query($sql);
