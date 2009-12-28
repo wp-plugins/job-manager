@@ -2,15 +2,17 @@
 Contributors: pento
 Donate link: http://pento.net/donate/
 Tags: jobs, manager, list, listing, employer, application
-Requires at least: 2.7
+Requires at least: 2.9
 Tested up to: 2.9
-Stable tag: trunk
+Stable tag: 0.3.3
 
-A job listing and job application management plugin for Wordpress.
+A job listing and job application management plugin for WordPress.
 
 == Description ==
 
-A plugin for managing job lists and job applications on your Wordpress site. It supports all the features you need to manage your organisation's jobs.
+A plugin for managing job lists and job applications on your WordPress site. It supports all the features you need to manage your organisation's job openings.
+
+***Important Note***: If you're upgrading from version 0.3.3 or earlier, *please* read the [upgrade documentation](http://code.google.com/p/wordpress-job-manager/wiki/UpgradingFrom03x). There have been significant changes that you need to know about.
 
 *    *Job Listing*
     *    Categories to create multiple job lists
@@ -32,7 +34,8 @@ Related links:
 
 * [Plugin Homepage](http://pento.net/projects/wordpress-job-manager-plugin/)
 * [Support Forum](http://wordpress.org/tags/job-manager?forum_id=10)
-* [Report Bugs](http://code.google.com/p/wordpress-job-manager/issues/list)
+* [Report Bugs and Request Features](http://code.google.com/p/wordpress-job-manager/issues/list)
+* [Development Roadmap](http://code.google.com/p/wordpress-job-manager/wiki/Roadmap)
 
 == Installation ==
 
@@ -55,6 +58,20 @@ The Job Manager supports added functionality when other plugins are installed. I
 Job Manager will add all of your job lists and job detail pages to your sitemap, when [Google XML Sitemaps](http://wordpress.org/extend/plugins/google-sitemap-generator/) is installed on your site.
 
 == Changelog ==
+
+= 0.4.0 =
+* ADDED: Check to make sure data directories are writeable by the plugin
+* ADDED: Nonce fields are now in all Admin forms, for added security
+* ADDED: Ability to delete jobs
+* ADDED: Ability to change the page template used
+* CHANGED: Job Manager now requires WordPress 2.9 or higher
+* CHANGED: All data is now stored in default WordPress tables
+* CHANGED: All options are now stored in a single wp_options entry
+* FIXED: A job being displayed could include an incorrect <title>
+* FIXED: No longer re-write the .htaccess file. Unnecessary, and was causing problems on 1&1 hosting.
+* FIXED: Problem with including symlinked files
+* FIXED: Secured the uploaded files directory
+* FIXED: Link to files in the Application List
 
 = 0.3.3 =
 * FIXED: SQL errors when deleting applications
@@ -85,9 +102,6 @@ Job Manager will add all of your job lists and job detail pages to your sitemap,
 * FIXED: Jobs were not displaying if the start or end date was empty.
 
 = 0.2.2 =
-
-This upgrade is recommended for all users.
-
 * FIXED: Applications without an associated job were not being stored correctly.
 * FIXED: Minor bugs with filtering applications.
 
@@ -99,3 +113,9 @@ This upgrade is recommended for all users.
 
 = 0.1.0 =
 * Initial release
+
+== Upgrade Notice ==
+
+= 0.4.0 =
+
+This release contains significant database and compatibility changes. If you're upgrading from version 0.3.3 or earlier, please read the upgrade documentation: http://code.google.com/p/wordpress-job-manager/wiki/UpgradingFrom03x .

@@ -43,31 +43,30 @@ function jobman_create_widget($function, $title) {
 <?php
 }
 
-function jobman_url($func = 'all', $data = '') {
-	$structure = get_option('permalink_structure');
-	$url = get_option('jobman_page_name');
-	
-	if($structure == '') {
-		$return = get_option('home') . '?' . $url . '=' . $func;
-		if($data != '') {
-			$return .= '&amp;data=' . $data;
-		}
+function jobman_check_upload_dirs() {
+	if(!is_writeable(__DIR__ . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR)) {
+		return false;
 	}
-	else {
-		$return = get_option('home') . '/' . $url . '/';
-		if($func != 'all' && $func != '') {
-			$return .=  $func . '/';
-		}
-		if($data != '') {
-			$return .= $data . '/';
-		}
+	if(!is_writeable(__DIR__ . DIRECTORY_SEPARATOR . 'icons' . DIRECTORY_SEPARATOR)) {
+		return false;
 	}
-
-	return $return;
+	return true;
 }
 
 function jobman_load_translation_file() {
 	load_plugin_textdomain('jobman', '', JOBMAN_FOLDER . '/translations');
 }
+
+function jobman_page_taxonomy_setup() {
+	// Create our new page types
+	register_post_type('jobman_job', array('exclude_from_search' => true));
+	register_post_type('jobman_joblist', array('exclude_from_search' => true));
+	register_post_type('jobman_app_form', array('exclude_from_search' => true));
+	register_post_type('jobman_app', array('exclude_from_search' => true));
+
+	// Create our new taxonomy thing
+	register_taxonomy('jobman_category', array('jobman_job', 'jobman_app'), array('hierarchical' => false, 'label' => __('Category', 'series')));
+}
+
 
 ?>
