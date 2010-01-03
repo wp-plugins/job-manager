@@ -3,7 +3,7 @@ Contributors: pento
 Donate link: http://pento.net/donate/
 Tags: jobs, manager, list, listing, employer, application
 Requires at least: 2.9
-Tested up to: 2.9
+Tested up to: 2.9.1
 Stable tag: trunk
 
 A job listing and job application management plugin for WordPress.
@@ -58,6 +58,11 @@ The Job Manager supports added functionality when other plugins are installed. I
 Job Manager will add all of your job lists and job detail pages to your sitemap, when [Google XML Sitemaps](http://wordpress.org/extend/plugins/google-sitemap-generator/) is installed on your site.
 
 == Changelog ==
+
+= 0.4.2 =
+* FIXED: Google XML Sitemap option not showing correctly
+* FIXED: Incorrect check could cause plugin activation to fail
+* FIXED: Removed some dead code
 
 = 0.4.1 =
 * FIXED: Application fields not saving properly
