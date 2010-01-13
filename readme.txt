@@ -4,7 +4,7 @@ Donate link: http://pento.net/donate/
 Tags: jobs, manager, list, listing, employer, application
 Requires at least: 2.9
 Tested up to: 2.9.1
-Stable tag: trunk
+Stable tag: 0.4.3
 
 A job listing and job application management plugin for WordPress.
 
@@ -58,6 +58,15 @@ The Job Manager supports added functionality when other plugins are installed. I
 Job Manager will add all of your job lists and job detail pages to your sitemap, when [Google XML Sitemaps](http://wordpress.org/extend/plugins/google-sitemap-generator/) is installed on your site.
 
 == Changelog ==
+
+= 0.4.4 =
+* FIXED: Job permalinks now being treated as pages
+* FIXED: Jobs/application form not showing if main jobs page was set as a child page
+* FIXED: Not all applications displaying in application list
+* FIXED: Permalinks now allow for a lack of trailing '/'
+* FIXED: Application field sort order not being obeyed
+* FIXED: Job link not being display in application list
+* FIXED: Category pages not storing correctly
 
 = 0.4.3 =
 * FIXED: Removed some references to the old code removed in 0.4.2
@@ -128,11 +137,3 @@ Job Manager will add all of your job lists and job detail pages to your sitemap,
 * Initial release
 
 == Upgrade Notice ==
-
-= 0.4.1 =
-
-This release contains significant database and compatibility changes. If you're upgrading from version 0.3.3 or earlier, please read the upgrade documentation: http://code.google.com/p/wordpress-job-manager/wiki/UpgradingFrom03x .
-
-= 0.4.0 =
-
-This release contains significant database and compatibility changes. If you're upgrading from version 0.3.3 or earlier, please read the upgrade documentation: http://code.google.com/p/wordpress-job-manager/wiki/UpgradingFrom03x .
