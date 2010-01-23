@@ -3,8 +3,8 @@ Contributors: pento
 Donate link: http://pento.net/donate/
 Tags: jobs, manager, list, listing, employer, application
 Requires at least: 2.9
-Tested up to: 2.9.1
-Stable tag: trunk
+Tested up to: 3.0-alpha
+Stable tag: 0.4.8
 
 A job listing and job application management plugin for WordPress.
 
@@ -12,7 +12,9 @@ A job listing and job application management plugin for WordPress.
 
 A plugin for managing job lists and job applications on your WordPress site. It supports all the features you need to manage your organisation's job openings.
 
-***Important Note***: If you're upgrading from version 0.3.3 or earlier, *please* read the [upgrade documentation](http://code.google.com/p/wordpress-job-manager/wiki/UpgradingFrom03x). There have been significant changes that you need to know about.
+Do you speak a language other than English? Do you have time to translate some strings? If so, I'd love to [hear from you](http://pento.net/contact/)!
+
+***WARNING***: This is a beta release of Job Manager, so may contain bugs. The stable release should be out in a few days, but I'd appreciate it you could install it on your development system and give it a test drive! If you run into any problems, please [submit a bug report](http://code.google.com/p/wordpress-job-manager/issues/list)! If you'd like to try the current stable version, please download [Version 0.4.8](http://downloads.wordpress.org/plugin/job-manager.0.4.8.zip).
 
 *    *Job Listing*
     *    Categories to create multiple job lists
@@ -59,8 +61,32 @@ Job Manager will add all of your job lists and job detail pages to your sitemap,
 
 == Changelog ==
 
+= 0.5 =
+* ADDED: Ability for applicants to register
+* ADDED: New settings for user registration
+* ADDED: Nicer explanations of settings
+* ADDED: Links to categories from settings page
+* ADDED: Applicant filter on Applications list
+* ADDED: Application star rating, and filtering by rating
+* ADDED: 'Add Job' item to the wp-admin menu
+* ADDED: Job field for applications to be emailed to a custom address
+* ADDED: Emails are now stored when they're sent
+* ADDED: Interface for browsing sent emails
+* ADDED: Admin print stylesheet, so applications can be printed nicely
+* ADDED: Option in Application Details to email application a different person
+* CHANGED: User permissions: 'publish_posts' capability (author) is required for posting jobs, 'read_private_pages' capability (editor) is required for viewing applications
+* CHANGED: Removed main URL editing from settings
+* CHANGED: Settings page layout, for readability
+* FIXED: Category listing now significantly more efficient
+* FIXED: Google XML Sitemaps option not saving correctly
+* FIXED: Google XML Sitemaps code updated to use new data storage format
+* FIXED: Some strings not going through i18n functions
+* FIXED: A handful of grammar/spelling mistakes
+* FIXED: Code cleanup, to conform more closely with [WordPress Coding Standards](http://codex.wordpress.org/WordPress_Coding_Standards)
+* FIXED: Job Lists not obeying Display End Date
+
 = 0.4.8 =
-* FIXED: Timeout problem on Application List page, if there are <5 applications
+* FIXED: Timeout problem on Application List page, if there are less than 5 applications
 
 = 0.4.7 =
 * FIXED: Empty job list message not displaying correctly
@@ -163,3 +189,6 @@ Job Manager will add all of your job lists and job detail pages to your sitemap,
 * Initial release
 
 == Upgrade Notice ==
+
+= 0.5-beta1 =
+This is a beta release. Please only install it in a test environment.
