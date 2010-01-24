@@ -14,7 +14,7 @@ A plugin for managing job lists and job applications on your WordPress site. It 
 
 Do you speak a language other than English? Do you have time to translate some strings? If so, I'd love to [hear from you](http://pento.net/contact/)!
 
-***WARNING***: Version 0.5-beta1 is a beta release of Job Manager, so it may contain bugs. The stable release should be out in a few days, but I'd appreciate it you could install the beta on your development system and give it a test drive! If you run into any problems, please [submit a bug report](http://code.google.com/p/wordpress-job-manager/issues/list). If you'd like to try the current stable version, please download [Version 0.4.8](http://downloads.wordpress.org/plugin/job-manager.0.4.8.zip).
+***WARNING***: Version 0.5-beta2 is a beta release of Job Manager, so it may contain bugs. The stable release should be out in a few days, but I'd appreciate it you could install the beta on your development system and give it a test drive! If you run into any problems, please [submit a bug report](http://code.google.com/p/wordpress-job-manager/issues/list). If you'd like to try the current stable version, please download [Version 0.4.8](http://downloads.wordpress.org/plugin/job-manager.0.4.8.zip).
 
 *    *Job Listing*
     *    Categories to create multiple job lists
@@ -59,6 +59,10 @@ The Job Manager supports added functionality when other plugins are installed. I
 
 Job Manager will add all of your job lists and job detail pages to your sitemap, when [Google XML Sitemaps](http://wordpress.org/extend/plugins/google-sitemap-generator/) is installed on your site.
 
+= Credits =
+
+Print Icon courtey of [VisualPharm](http://www.visualpharm.com/), under a [CC BY-ND](http://creativecommons.org/licenses/by-nd/3.0/) license.
+
 == Changelog ==
 
 = 0.5 =
@@ -73,6 +77,7 @@ Job Manager will add all of your job lists and job detail pages to your sitemap,
 * ADDED: Emails are now stored when they're sent
 * ADDED: Interface for browsing sent emails
 * ADDED: Admin print stylesheet, so applications can be printed nicely
+* ADDED: Print icon to Application Details page
 * ADDED: Option in Application Details to email application a different person
 * ADDED: HTML Code field to Application Form Settings
 * CHANGED: User permissions: 'publish_posts' capability (author) is required for posting jobs, 'read_private_pages' capability (editor) is required for viewing applications
@@ -85,6 +90,7 @@ Job Manager will add all of your job lists and job detail pages to your sitemap,
 * FIXED: A handful of grammar/spelling mistakes
 * FIXED: Code cleanup, to conform more closely with [WordPress Coding Standards](http://codex.wordpress.org/WordPress_Coding_Standards)
 * FIXED: Job Lists not obeying Display End Date
+* FIXED: Default Application Form had an incorrect data entry
 
 = 0.4.8 =
 * FIXED: Timeout problem on Application List page, if there are less than 5 applications

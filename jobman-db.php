@@ -130,7 +130,7 @@ function jobman_create_db() {
 								'label' => 'Do you have a degree?',
 								'type' => 'radio',
 								'listdisplay' => 1,
-								'data' => 'Yes\r\nNo',
+								'data' => "Yes\r\nNo",
 								'filter' => '',
 								'error' => '',
 								'sortorder' => 12,
@@ -549,6 +549,14 @@ function jobman_upgrade_db( $oldversion ) {
 		$id = wp_insert_post( $page );
 		
 		$options['register_page'] = $id;
+	}
+	
+	if( $oldversion < 8 ) {
+		// Fix incorrect default forms
+		foreach( $options['fields'] as $id => $field ) {
+		    if( 'Yes\r\nNo' == $field['data'] )
+		        $options['fields'][$id]['data'] = "Yes\r\nNo";
+		}
 	}
 	
 	update_option( 'jobman_options', $options );
