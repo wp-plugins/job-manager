@@ -14,8 +14,6 @@ A plugin for managing job lists and job applications on your WordPress site. It 
 
 Do you speak a language other than English? Do you have time to translate some strings? If so, I'd love to [hear from you](http://pento.net/contact/)!
 
-***WARNING***: Version 0.5-beta3 is a beta release of Job Manager, so it may contain bugs. The stable release should be out in a few days, but I'd appreciate it you could install the beta on your development system and give it a test drive! If you run into any problems, please [submit a bug report](http://code.google.com/p/wordpress-job-manager/issues/list). If you'd like to try the current stable version, please download [Version 0.4.8](http://downloads.wordpress.org/plugin/job-manager.0.4.8.zip).
-
 *    *Job Listing*
     *    Categories to create multiple job lists
     *    Jobs can be filed under multiple categories
@@ -38,6 +36,7 @@ Related links:
 * [Support Forum](http://wordpress.org/tags/job-manager?forum_id=10)
 * [Report Bugs and Request Features](http://code.google.com/p/wordpress-job-manager/issues/list)
 * [Development Roadmap](http://code.google.com/p/wordpress-job-manager/wiki/Roadmap)
+* [Translations](http://translations.pento.net/)
 
 == Installation ==
 
@@ -80,6 +79,7 @@ Print Icon courtesy of [VisualPharm](http://www.visualpharm.com/), under a [CC B
 * ADDED: Print icon to Application Details page
 * ADDED: Option in Application Details to email application a different person
 * ADDED: HTML Code field to Application Form Settings
+* ADDED: A bunch of CSS classes to the front end elements
 * CHANGED: User permissions: 'publish_posts' capability (author) is required for posting jobs, 'read_private_pages' capability (editor) is required for viewing applications
 * CHANGED: Removed main URL editing from settings
 * CHANGED: Settings page layout, for readability
@@ -92,6 +92,7 @@ Print Icon courtesy of [VisualPharm](http://www.visualpharm.com/), under a [CC B
 * FIXED: Code cleanup, to conform more closely with [WordPress Coding Standards](http://codex.wordpress.org/WordPress_Coding_Standards)
 * FIXED: Job Lists not obeying Display End Date
 * FIXED: Default Application Form had an incorrect data entry
+* FIXED: Bug in file naming for downloading applicant files
 
 = 0.4.8 =
 * FIXED: Timeout problem on Application List page, if there are less than 5 applications
