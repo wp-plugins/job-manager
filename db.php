@@ -11,6 +11,7 @@ function jobman_create_db() {
 								'type' => 'heading',
 								'listdisplay' => 0,
 								'data' => '',
+								'mandatory' => 0,
 								'filter' => '',
 								'error' => '',
 								'sortorder' => 0,
@@ -21,6 +22,7 @@ function jobman_create_db() {
 								'type' => 'text',
 								'listdisplay' => 1,
 								'data' => '',
+								'mandatory' => 1,
 								'filter' => '',
 								'error' => '',
 								'sortorder' => 1,
@@ -31,6 +33,7 @@ function jobman_create_db() {
 								'type' => 'text',
 								'listdisplay' => 1,
 								'data' => '',
+								'mandatory' => 1,
 								'filter' => '',
 								'error' => '',
 								'sortorder' => 2,
@@ -41,6 +44,7 @@ function jobman_create_db() {
 								'type' => 'text',
 								'listdisplay' => 0,
 								'data' => '',
+								'mandatory' => 1,
 								'filter' => '',
 								'error' => '',
 								'sortorder' => 3,
@@ -51,6 +55,7 @@ function jobman_create_db() {
 								'type' => 'heading',
 								'listdisplay' => 0,
 								'data' => '',
+								'mandatory' => 0,
 								'filter' => '',
 								'error' => '',
 								'sortorder' => 4,
@@ -61,6 +66,7 @@ function jobman_create_db() {
 								'type' => 'textarea',
 								'listdisplay' => 0,
 								'data' => '',
+								'mandatory' => 0,
 								'filter' => '',
 								'error' => '',
 								'sortorder' => 5,
@@ -71,6 +77,7 @@ function jobman_create_db() {
 								'type' => 'text',
 								'listdisplay' => 0,
 								'data' => '',
+								'mandatory' => 0,
 								'filter' => '',
 								'error' => '',
 								'sortorder' => 6,
@@ -81,6 +88,7 @@ function jobman_create_db() {
 								'type' => 'text',
 								'listdisplay' => 0,
 								'data' => '',
+								'mandatory' => 0,
 								'filter' => '',
 								'error' => '',
 								'sortorder' => 7,
@@ -91,6 +99,7 @@ function jobman_create_db() {
 								'type' => 'text',
 								'listdisplay' => 1,
 								'data' => '',
+								'mandatory' => 0,
 								'filter' => '',
 								'error' => '',
 								'sortorder' => 8,
@@ -101,6 +110,7 @@ function jobman_create_db() {
 								'type' => 'text',
 								'listdisplay' => 0,
 								'data' => '',
+								'mandatory' => 0,
 								'filter' => '',
 								'error' => '',
 								'sortorder' => 9,
@@ -111,6 +121,7 @@ function jobman_create_db() {
 								'type' => 'text',
 								'listdisplay' => 0,
 								'data' => '',
+								'mandatory' => 0,
 								'filter' => '',
 								'error' => '',
 								'sortorder' => 10,
@@ -121,6 +132,7 @@ function jobman_create_db() {
 								'type' => 'heading',
 								'listdisplay' => 0,
 								'data' => '',
+								'mandatory' => 0,
 								'filter' => '',
 								'error' => '',
 								'sortorder' => 11,
@@ -131,6 +143,7 @@ function jobman_create_db() {
 								'type' => 'radio',
 								'listdisplay' => 1,
 								'data' => "Yes\r\nNo",
+								'mandatory' => 0,
 								'filter' => '',
 								'error' => '',
 								'sortorder' => 12,
@@ -141,6 +154,7 @@ function jobman_create_db() {
 								'type' => 'text',
 								'listdisplay' => 0,
 								'data' => '',
+								'mandatory' => 0,
 								'filter' => '',
 								'error' => '',
 								'sortorder' => 13,
@@ -151,6 +165,7 @@ function jobman_create_db() {
 								'type' => 'text',
 								'listdisplay' => 0,
 								'data' => '',
+								'mandatory' => 0,
 								'filter' => '',
 								'error' => '',
 								'sortorder' => 14,
@@ -161,6 +176,7 @@ function jobman_create_db() {
 								'type' => 'file',
 								'listdisplay' => 1,
 								'data' => '',
+								'mandatory' => 0,
 								'filter' => '',
 								'error' => '',
 								'sortorder' => 15,
@@ -171,6 +187,7 @@ function jobman_create_db() {
 								'type' => 'blank',
 								'listdisplay' => 0,
 								'data' => '',
+								'mandatory' => 0,
 								'filter' => '',
 								'error' => '',
 								'sortorder' => 16,
@@ -181,10 +198,53 @@ function jobman_create_db() {
 								'type' => 'checkbox',
 								'listdisplay' => 0,
 								'data' => 'I have read and understood the privacy policy.',
+								'mandatory' => 1,
 								'filter' => 'I have read and understood the privacy policy.',
 								'error' => "You need to read and agree to our privacy policy before we can accept your application. Please click the 'Back' button in your browser, read our privacy policy, and confirm that you accept.",
 								'sortorder' => 17,
 								'categories' => array()
+							);
+							
+	$options['job_fields'] = array();
+
+	$options['job_fields'][1] = array(
+								'label' => 'Salary',
+								'type' => 'text',
+								'data' => '',
+								'sortorder' => 0,
+								'description' => ''
+							);
+
+	$options['job_fields'][2] = array(
+								'label' => 'Start Date',
+								'type' => 'date',
+								'data' => '',
+								'sortorder' => 1,
+								'description' => __( 'The date that the job starts. For positions available immediately, leave blank.', 'jobman' )
+							);
+
+	$options['job_fields'][3] = array(
+								'label' => 'End Date',
+								'type' => 'date',
+								'data' => '',
+								'sortorder' => 2,
+								'description' =>  __( 'The date that the job finishes. For ongoing positions, leave blank.', 'jobman' )
+							);
+
+	$options['job_fields'][4] = array(
+								'label' => 'Location',
+								'type' => 'text',
+								'data' => '',
+								'sortorder' => 3,
+								'description' => ''
+							);
+
+	$options['job_fields'][5] = array(
+								'label' => 'Job Information',
+								'type' => 'textarea',
+								'data' => '',
+								'sortorder' => 4,
+								'description' => ''
 							);
 
 	// Create the root jobs page
@@ -579,10 +639,171 @@ function jobman_upgrade_db( $oldversion ) {
 		}
 	}
 	
+	if( $oldversion < 11 ) {
+		// Remove the old category pages
+		$cat_pages = get_posts( 'post_type=jobman_joblist&meta_key=_catpage&meta_value=1&numberposts=-1' );
+		foreach( $cat_pages as $cp ) {
+			wp_delete_post( $cp->ID );
+		}
+
+		// Add the 'mandatory' field option
+		foreach( $options['fields'] as $key => $field ) {
+			$options['fields'][$key]['mandatory'] = 0;
+		}
+	}
+	
+	if( $oldversion < 12 ) {
+		// Add the new job fields
+		$options['job_fields'] = array();
+
+		$options['job_fields'][1] = array(
+									'label' => 'Salary',
+									'type' => 'text',
+									'data' => '',
+									'sortorder' => 0,
+									'description' => ''
+								);
+
+		$options['job_fields'][2] = array(
+									'label' => 'Start Date',
+									'type' => 'date',
+									'data' => '',
+									'sortorder' => 1,
+									'description' => __( 'The date that the job starts. For positions available immediately, leave blank.', 'jobman' )
+								);
+
+		$options['job_fields'][3] = array(
+									'label' => 'End Date',
+									'type' => 'date',
+									'data' => '',
+									'sortorder' => 2,
+									'description' =>  __( 'The date that the job finishes. For ongoing positions, leave blank.', 'jobman' )
+								);
+
+		$options['job_fields'][4] = array(
+									'label' => 'Location',
+									'type' => 'text',
+									'data' => '',
+									'sortorder' => 3,
+									'description' => ''
+								);
+
+		$options['job_fields'][5] = array(
+									'label' => 'Job Information',
+									'type' => 'textarea',
+									'data' => '',
+									'sortorder' => 4,
+									'description' => ''
+								);
+								
+		// Convert existing jobs to new format
+		$jobs = get_posts( 'post_type=jobman_job&numberposts=-1' );
+		foreach( $jobs as $job ) {
+			add_post_meta( $job->ID, 'data1', get_post_meta( $job->ID, 'salary', true ), true );
+			add_post_meta( $job->ID, 'data2', get_post_meta( $job->ID, 'startdate', true ), true );
+			add_post_meta( $job->ID, 'data3', get_post_meta( $job->ID, 'enddate', true ), true );
+			add_post_meta( $job->ID, 'data4', get_post_meta( $job->ID, 'location', true ), true );
+			add_post_meta( $job->ID, 'data5', $job->post_content, true );
+		}
+		
+		// Convert file uploads to attachments
+		$apps = get_posts( 'post_type=jobman_app&numberposts=-1' );
+		foreach( $apps as $app ) {
+			foreach( $options['fields'] as $fid => $field ) {
+				if( 'file' != $field['type'] )
+					continue;
+					
+				$filename = get_post_meta( $app->ID, "data$fid", true );
+				if( '' == $filename || ! file_exists( WP_CONTENT_DIR . '/' . JOBMAN_FOLDER . "/uploads/$filename" ) )
+					continue;
+					
+				$upload = wp_upload_bits( $_FILES["jobman-field-$fid"]['name'], NULL, file_get_contents( WP_CONTENT_DIR . '/' . JOBMAN_FOLDER . "/uploads/$filename" ) );
+				$data = '';
+				if( ! $upload['error'] ) {
+					$attachment = array(
+									'post_title' => '',
+									'post_content' => '',
+									'post_status' => 'private',
+									'post_mime_type' => mime_content_type( $upload['file'] )
+								);
+					$data = wp_insert_attachment( $attachment, $upload['file'], $app->ID );
+					$attach_data = wp_generate_attachment_metadata( $data, $upload['file'] );
+					wp_update_attachment_metadata( $data, $attach_data );
+				}
+				
+				update_post_meta( $job->ID, "data$fid", $data );
+			}
+		}
+		
+		// Convert icons to attachments
+		$icons = array();
+		foreach( $options['icons'] as $iid => $icon ) {
+			$filename = WP_CONTENT_DIR . '/' . JOBMAN_FOLDER . "/icons/$iid.{$icon['extension']}";
+				$upload = wp_upload_bits( $_FILES["jobman-field-$fid"]['name'], NULL, file_get_contents( WP_CONTENT_DIR . '/' . JOBMAN_FOLDER . "/uploads/$filename" ) );
+				if( ! $upload['error'] ) {
+					$attachment = array(
+									'post_title' => $icon['title'],
+									'post_content' => '',
+									'post_status' => 'publish',
+									'post_mime_type' => mime_content_type( $upload['file'] )
+								);
+					$new_iid = wp_insert_attachment( $attachment, $upload['file'], $options['main_pages'] );
+					$attach_data = wp_generate_attachment_metadata( $new_iid, $upload['file'] );
+					wp_update_attachment_metadata( $new_iid, $attach_data );
+					
+					$icons[] = $new_iid;
+				}
+		}
+		$options['icons'] = $icons;
+	}
+	
 	update_option( 'jobman_options', $options );
 }
 
 function jobman_drop_db() {
+	$options = get_option( 'jobman_options' );
+	
+	// Delete jobs
+	if( $options['uninstall']['jobs'] ) {
+		$jobs = get_posts( 'post_type=jobman_job&numberposts=-1' );
+		if( count( $jobs ) > 0 ) {
+			foreach( $jobs as $job ) {
+				wp_delete_post( $job->ID );
+			}
+		}
+	}
+	
+	// Delete applications
+	if( $options['uninstall']['applications'] ) {
+		$apps = get_posts( 'post_type=jobman_app&numberposts=-1' );
+		if( count( $apps ) > 0 ) {
+			foreach( $apps as $app ) {
+				wp_delete_post( $app->ID );
+			}
+		}
+	}
+
+	// Delete categories
+	if( $options['uninstall']['categories'] ) {
+		$categories = get_terms( 'jobman_category', 'hide_empty=0' );
+		
+		if( count( $categories ) > 0 ) {
+			foreach( $categories as $cat ) {
+				wp_delete_term( $cat->term_id, 'jobman_category' );
+			}
+		}
+	}
+	
+	// Always delete the base page, register page and application page
+	wp_delete_post( $options['main_page'] );
+	wp_delete_post( $options['register_page'] );
+	
+	$pages = get_posts( 'post_type=jobman_app_form&numberposts=-1' );
+	if( count( $pages ) > 0 ) {
+		foreach( $pages as $page ) {
+			wp_delete_post( $page->ID );
+		}
+	}
 }
 
 ?>

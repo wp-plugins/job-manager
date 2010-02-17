@@ -30,7 +30,7 @@ function jobman_create_dashboard( $widths, $functions, $titles ) {
 
 function jobman_create_widget( $function, $title ) {
 ?>
-				<div id="jobman-<?php echo $function ?>" class="postbox">
+				<div id="jobman-<?php echo $function ?>" class="postbox jobman-postbox">
 					<div class="handlediv" title="<?php _e('Click to toggle') ?>"><br /></div>
 					<h3 class='hndle'><span><?php echo $title ?></span></h3>
 					<div class="inside">
@@ -41,16 +41,6 @@ function jobman_create_widget( $function, $title ) {
 					</div>
 				</div>
 <?php
-}
-
-function jobman_check_upload_dirs() {
-	if( ! is_writeable( JOBMAN_UPLOAD_DIR . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR ) )
-		return false;
-
-	if( ! is_writeable( JOBMAN_UPLOAD_DIR . DIRECTORY_SEPARATOR . 'icons' . DIRECTORY_SEPARATOR ) )
-		return false;
-
-	return true;
 }
 
 function jobman_load_translation_file() {
@@ -67,7 +57,12 @@ function jobman_page_taxonomy_setup() {
 	register_post_type( 'jobman_email', array( 'exclude_from_search' => true ) );
 
 	// Create our new taxonomy thing
-	register_taxonomy( 'jobman_category', array( 'jobman_job', 'jobman_app' ), array( 'hierarchical' => false, 'label' => __( 'Category', 'jobman' ), 'query_var' => 'jcat' ) );
+	$options = get_option( 'jobman_options' );
+	
+	$root = get_page( $options['main_page'] );
+	$url = get_page_uri( $root->ID );
+
+	register_taxonomy( 'jobman_category', array( 'jobman_job', 'jobman_app' ), array( 'hierarchical' => false, 'label' => __( 'Category', 'series' ), 'query_var' => 'jcat', 'rewrite' => array( 'slug' => $url ) ) );
 }
 
 function jobman_page_hierarchical_setup( $types ) {

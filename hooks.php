@@ -3,10 +3,6 @@
 // Hooks for initial setup
 register_activation_hook( WP_PLUGIN_DIR . '/' . JOBMAN_FOLDER . '/job-manager.php', 'jobman_activate' );
 
-// Admin menu
-if( is_admin() )
-	add_action( 'admin_menu', 'jobman_admin_setup' );
-
 // Translation hook
 add_action( 'init', 'jobman_load_translation_file' );
 
@@ -17,7 +13,7 @@ add_action( 'init', 'jobman_load_translation_file' );
 add_filter( 'query_vars', 'jobman_queryvars' );
 add_action( 'generate_rewrite_rules', 'jobman_add_rewrite_rules' );
 add_action( 'init', 'jobman_flush_rewrite_rules' );
-add_filter( 'the_posts', 'jobman_display_jobs', 1) ;
+add_filter( 'the_posts', 'jobman_display_jobs', 1 ) ;
 // Add our init stuff
 add_action( 'init', 'jobman_display_init' );
 // Set the template we want to use
@@ -31,12 +27,32 @@ add_action( 'wp_head', 'jobman_display_head' );
 add_filter( 'hierarchical_post_types', 'jobman_page_hierarchical_setup' );
 // For the page links
 add_filter( 'post_link', 'jobman_page_link', 10, 2 );
+add_filter( 'the_permalink_rss', 'jobman_rss_page_link', 10 );
 
 // Our custom page/taxonomy setup
 add_action( 'init', 'jobman_page_taxonomy_setup' );
 
+// RSS Feeds
+add_action( 'do_feed_jobman', 'jobman_rss_feed', 1, 1 );
+
+
+// 
+// Widgets
+//
+add_action('widgets_init', create_function('', 'return register_widget("JobmanLatestJobsWidget");'));
+add_action('widgets_init', create_function('', 'return register_widget("JobmanCategoriesWidget");'));
+add_action('widgets_init', create_function('', 'return register_widget("JobmanHighlightedJobsWidget");'));
+
+//
+// Admin Hooks
+//
+// Admin menu
+add_action( 'admin_menu', 'jobman_admin_setup' );
+// Plugin settings links
+add_filter( 'plugin_row_meta', 'jobman_plugin_row_meta', 10, 2 );
 // For the application rating AJAX call
 add_action( 'wp_ajax_jobman_rate_application', 'jobman_rate_application' );
+
 
 //
 // Plugins
