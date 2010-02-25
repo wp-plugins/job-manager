@@ -63,6 +63,13 @@ function jobman_display_jobs_list( $cat ) {
 			continue;
 		}
 			
+		// Remove expired jobs
+		$displaystartdate = $job->post_date;
+		if( '' != $displaystartdate && strtotime( $displayenddate ) = time() ) {
+			unset( $jobs[$id] );
+			continue;
+		}
+			
 		// Get related categories
 		if( $options['related_categories'] ) {
 			$categories = wp_get_object_terms( $job->ID, 'jobman_category' );
