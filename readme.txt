@@ -4,7 +4,7 @@ Donate link: http://pento.net/donate/
 Tags: jobs, job, manager, list, listing, employer, application, board
 Requires at least: 2.9
 Tested up to: 3.0-beta1
-Stable tag: 0.6.6
+Stable tag: trunk
 
 A job listing and job application management plugin for WordPress.
 
