@@ -1,6 +1,6 @@
 <?php // encoding: UTF-8
 function jobman_display_jobs_list( $cat ) {
-	global $jobman_shortcode_jobs, $jobman_shortcodes, $jobman_field_shortcodes;
+	global $jobman_shortcode_jobs, $jobman_shorcode_all_jobs, $jobman_shortcode_category, $jobman_shortcodes, $jobman_field_shortcodes, $wp_query;
 	$options = get_option( 'jobman_options' );
 
 	$content = '';
@@ -18,34 +18,70 @@ function jobman_display_jobs_list( $cat ) {
 	}
 	
 	if( 'all' != $cat ) {
-		$category = get_term( $cat, 'jobman_category' );
-		if( NULL == $category )
+		$jobman_shortcode_category = $category = get_term( $cat, 'jobman_category' );
+		if( NULL == $category ) {
 			$cat = 'all';
-		else
+		}
+		else {
 			$page->post_title = $category->name;
+			$page->post_parent = $options['main_page'];
+			$page->post_name = $category->slug;
+		}
 	}
 	
-	$sortby = '';
-	switch( $options['sort_by'] ) {
-		case 'title':
-			$sortby = '&orderby=title';
-			break;
-		case 'dateposted':
-			$sortby = '&orderby=date';
-			break;
-		case 'closingdate':
-			$sortby = '&orderby=meta_value&meta_key=displayenddate';
-			break;
+	$args = array( 
+				'post_type' => 'jobman_job',
+				'suppress_filters' => false
+			);
+	
+	if( ! empty( $options['sort_by'] ) ) {
+		switch( $options['sort_by'] ) {
+			case 'title':
+				$args['orderby'] = 'title';
+				break;
+			case 'dateposted':
+				$args['orderby'] = 'date';
+				break;
+			case 'closingdate':
+				$args['orderby'] = 'meta_value';
+				$args['meta_key'] = 'displayenddate';
+				break;
+			default:
+				$args['orderby'] = 'meta_value';
+				$args['meta_key'] = $options['sort_by'];
+				break;
+		}
 	}
 	
-	$sortorder = '';
+	if( $options['jobs_per_page'] > 0 ) {
+		$args['numberposts'] = $options['jobs_per_page'];
+		$args['posts_per_page'] = $options['jobs_per_page'];
+
+		if( array_key_exists( 'page', $wp_query->query_vars ) && $wp_query->query_vars['page'] > 1 )
+			$args['offset'] = $wp_query->query_vars['page'] - 1;
+	}
+	else {
+		$args['numberposts'] = -1;
+	}
+	
 	if( in_array( $options['sort_order'], array( 'ASC', 'DESC' ) ) )
-		$sortorder = '&order=' . $options['sort_order'];
+		$args['order'] = $options['sort_order'];
 	
-	if( 'all' == $cat )
-		$jobs = get_posts( "post_type=jobman_job&numberposts=-1$sortby$sortorder" );
-	else
-		$jobs = get_posts( "post_type=jobman_job&jcat=$category->slug&numberposts=-1$sortby$sortorder" );
+	if( 'all' != $cat )
+		$args['jcat'] = $category->slug;
+		
+	add_filter( 'posts_where', 'jobman_job_live_where' );
+	add_filter( 'posts_join', 'jobman_job_live_join' );
+	
+	$jobs = get_posts( $args );
+	
+	$args['posts_per_page'] = '';
+	$args['offset'] = '';
+	$args['numberposts'] = -1;
+	$jobman_shorcode_all_jobs = get_posts( $args );
+	
+	remove_filter( 'posts_where', 'jobman_job_live_where' );
+	remove_filter( 'posts_join', 'jobman_job_live_join' );
 		
 	if( $options['user_registration'] ) {
 		if( 'all' == $cat && $options['loginform_main'] )
@@ -56,20 +92,6 @@ function jobman_display_jobs_list( $cat ) {
 
 	$related_cats = array();
 	foreach( $jobs as $id => $job ) {
-		// Remove expired jobs
-		$displayenddate = get_post_meta( $job->ID, 'displayenddate', true );
-		if( '' != $displayenddate && strtotime( $displayenddate ) <= time() ) {
-			unset( $jobs[$id] );
-			continue;
-		}
-			
-		// Remove future jobs
-		$displaystartdate = $job->post_date;
-		if( '' != $displaystartdate && strtotime( $displaystartdate ) > time() ) {
-			unset( $jobs[$id] );
-			continue;
-		}
-			
 		// Get related categories
 		if( $options['related_categories'] ) {
 			$categories = wp_get_object_terms( $job->ID, 'jobman_category' );
@@ -91,6 +113,17 @@ function jobman_display_jobs_list( $cat ) {
 		
 		$content .= '<h3>' . __( 'Related Categories', 'jobman' ) . '</h3>';
 		$content .= implode(', ', $links) . '<br>';
+	}
+	
+	$applyform = false;
+	$data = get_posts( 'post_type=jobman_app_form&numberposts=-1' );
+	if( count( $data ) > 0 ) {
+		$applyform = true;
+		$applypage = $data[0];
+	
+		$url = get_page_link( $applypage->ID );
+
+		$content .= "<form action='$url' method='post'>";
 	}
 	
 	if( count( $jobs ) > 0 ) {
@@ -134,6 +167,9 @@ function jobman_display_jobs_list( $cat ) {
 			$content .= sprintf( __( "We currently don't have any jobs available in this area. Please check back regularly, as we frequently post new jobs. In the mean time, you can also <a href='%s'>send through your résumé</a>, which we'll keep on file, and you can check out the <a href='%s'>jobs we have available in other areas</a>.", 'jobman' ), $url, get_page_link( $options['main_page'] ) );
 		}
 	}
+	
+	if( $applyform )
+		$content .= '</form>';
 
 	$page->post_content = $content;
 	

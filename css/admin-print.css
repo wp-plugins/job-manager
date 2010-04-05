@@ -1,7 +1,3 @@
-body, body * {
-	overflow: visible !important;
-}
-
 #wphead {
 	display: none;
 }
@@ -18,11 +14,27 @@ body, body * {
 	display: none;
 }
 
+#update-nag {
+	display: none;
+}
+
+div.printicon {
+	display: none;
+}
+
 a.backlink {
 	display: none;
 }
 
 div.clear {
+	display: none;
+}
+
+#jobman-jobman_comments form * {
+	display: none;
+}
+
+#jobman-jobman_application_email_form {
 	display: none;
 }
 

@@ -17,23 +17,21 @@ class JobmanLatestJobsWidget extends WP_Widget {
 		if ( $title )
 			echo $before_title . $title . $after_title;
 
-		$jobs = get_posts( "post_type=jobman_job&numberposts=-1" );
+		$args = array(
+					'post_type' => 'jobman_job',
+					'numberposts' => -1,
+					'suppress_filters' => false
+				);
+					
+		add_filter( 'posts_where', 'jobman_job_live_where' );
+		add_filter( 'posts_join', 'jobman_job_live_join' );
+		
+		$jobs = get_posts( $args );
+		
+		remove_filter( 'posts_where', 'jobman_job_live_where' );
+		remove_filter( 'posts_join', 'jobman_job_live_join' );
 
 		foreach( $jobs as $id => $job ) {
-			// Remove expired jobs
-			$displayenddate = get_post_meta( $job->ID, 'displayenddate', true );
-			if( '' != $displayenddate && strtotime( $displayenddate ) <= time() ) {
-				unset( $jobs[$id] );
-				continue;
-			}
-			
-			// Remove future jobs
-			$displaystartdate = $job->post_date;
-			if( '' != $displaystartdate && strtotime( $displaystartdate ) > time() ) {
-				unset( $jobs[$id] );
-				continue;
-			}
-				
 			// Remove jobs not in selected categories
 			if( 'selected' == $instance['jobsfrom'] ) {
 				$categories = wp_get_object_terms( $job->ID, 'jobman_category' );
@@ -181,6 +179,14 @@ class JobmanCategoriesWidget extends WP_Widget {
 		$dropdown = 0;
 		if( array_key_exists( 'dropdown', $instance ) )
 			$dropdown = $instance['dropdown'];
+		
+		$show_counts = 0;
+		if( array_key_exists( 'show_counts', $instance ) )
+			$show_counts = $instance['show_counts'];
+
+		$hide_empty = 0;
+		if( array_key_exists( 'hide_empty', $instance ) )
+			$hide_empty = $instance['hide_empty'];
 
 		$categories = get_terms( 'jobman_category', 'hide_empty=0' );
 		if( count( $categories ) > 0 ) {
@@ -191,16 +197,42 @@ class JobmanCategoriesWidget extends WP_Widget {
 			else {
 				echo '<ul>';
 			}
-				
+			
+			$count_args = array( 
+							'post_type' => 'jobman_job',
+							'numberposts' => -1,
+							'suppress_filters' => false
+						);
+
 			foreach( $categories as $cat ) {
 				$selected = '';
 				if( array_key_exists( 'jcat', $wp_query->query_vars ) && $wp_query->query_vars['jcat'] == $cat->slug )
 					$selected = ' selected="selected"';
 				
+				$jobs = array();
+				if( $hide_empty || $show_counts ) {
+					$count_args['jcat'] = $cat->slug;
+					add_filter( 'posts_where', 'jobman_job_live_where' );
+					add_filter( 'posts_join', 'jobman_job_live_join' );
+					
+					$jobs = get_posts( $count_args );
+					
+					remove_filter( 'posts_where', 'jobman_job_live_where' );
+					remove_filter( 'posts_join', 'jobman_job_live_join' );
+				}
+				
+				if( $hide_empty && empty( $jobs ) )
+					continue;
+				
+				$count = '';
+				if( $show_counts ) {
+					$count = ' (' . count( $jobs ) . ')';
+				}
+				
 				if( $dropdown )
-					echo "<option value='$cat->slug'$selected>$cat->name</option>";
+					echo "<option value='$cat->slug'$selected>$cat->name$count</option>";
 				else
-					echo "<li><a href='" . get_term_link( $cat->slug, 'jobman_category' ) . "'>$cat->name</a></li>";
+					echo "<li><a href='" . get_term_link( $cat->slug, 'jobman_category' ) . "'>$cat->name$count</a></li>";
 			}
 
 			if( $dropdown ) {
@@ -249,9 +281,19 @@ class JobmanCategoriesWidget extends WP_Widget {
 		$dropdown = 0;
 		if( array_key_exists( 'dropdown', $instance ) )
 			$dropdown = $instance['dropdown'];
+		
+		$show_counts = 0;
+		if( array_key_exists( 'show_counts', $instance ) )
+			$show_counts = $instance['show_counts'];
+
+		$hide_empty = 0;
+		if( array_key_exists( 'hide_empty', $instance ) )
+			$hide_empty = $instance['hide_empty'];
 ?>
             <p>
 				<input id="<?php echo $this->get_field_id( 'dropdown' ); ?>" name="<?php echo $this->get_field_name( 'dropdown' ); ?>" type="checkbox" value="1" <?php echo ( $dropdown )?( 'checked="checked" ' ):( '' )?>/> <?php _e( 'Show as dropdown', 'jobman' ) ?><br/>
+				<input id="<?php echo $this->get_field_id( 'show_counts' ); ?>" name="<?php echo $this->get_field_name( 'show_counts' ); ?>" type="checkbox" value="1" <?php echo ( $show_counts )?( 'checked="checked" ' ):( '' )?>/> <?php _e( 'Show job counts', 'jobman' ); ?><br/>
+				<input id="<?php echo $this->get_field_id( 'hide_empty' ); ?>" name="<?php echo $this->get_field_name( 'hide_empty' ); ?>" type="checkbox" value="1" <?php echo ( $hide_empty )?( 'checked="checked" ' ):( '' )?>/> <?php _e( 'Hide empty categories', 'jobman' ); ?>
 			</p>
 <?php 
 	}
@@ -279,7 +321,20 @@ class JobmanHighlightedJobsWidget extends WP_Widget {
 		if ( $title )
 			echo $before_title . $title . $after_title;
 			
-		$jobs = get_posts( "post_type=jobman_job&numberposts=-1&meta_key=highlighted&meta_value=1" );
+		$args = array( 
+					'post_type' => 'jobman_job',
+					'numberposts' => -1,
+					'suppress_filters' => false,
+					'meta_key' => 'highlighted',
+					'meta_value' => 1
+				);
+		add_filter( 'posts_where', 'jobman_job_live_where' );
+		add_filter( 'posts_join', 'jobman_job_live_join' );
+		
+		$jobs = get_posts( $args );
+		
+		remove_filter( 'posts_where', 'jobman_job_live_where' );
+		remove_filter( 'posts_join', 'jobman_job_live_join' );
 
 		foreach( $jobs as $id => $job ) {
 			// Remove expired jobs
@@ -329,4 +384,79 @@ class JobmanHighlightedJobsWidget extends WP_Widget {
 	}
 
 }
+
+
+class JobmanJobsWidget extends WP_Widget {
+    /** constructor */
+    function JobmanJobsWidget() {
+		$name = __( 'Job Manager: Selected Jobs', 'jobman');
+		$options = array( 'description' => __( 'A customizable list jobs posted to your site', 'jobman' ) );
+		
+        parent::WP_Widget( false, $name, $options );	
+    }
+
+    function widget( $args, $instance ) {		
+        extract( $args );
+        $title = apply_filters( 'widget_title', $instance['title'] );
+        
+		echo $before_widget;
+		
+		if ( $title )
+			echo $before_title . $title . $after_title;
+
+		$args = array( 
+					'post_type' => 'jobman_job',
+					'numberposts' => -1,
+					'suppress_filters' => false,
+					'post__in' => explode( ',', $instance['jobs'] )
+				);
+		add_filter( 'posts_where', 'jobman_job_live_where' );
+		add_filter( 'posts_join', 'jobman_job_live_join' );
+		
+		$jobs = get_posts( $args );
+		
+		remove_filter( 'posts_where', 'jobman_job_live_where' );
+		remove_filter( 'posts_join', 'jobman_job_live_join' );
+
+		if( count( $jobs ) > 0 ) {
+			echo '<ul>';
+			foreach( $jobs as $job ) {
+				echo '<li><a href="' . get_page_link( $job->ID ) . '">' . $job->post_title . '</a></li>';
+			}
+			echo '</ul>';
+		}
+		else {
+			echo '<p>' . __( 'There are no jobs to display at this time.', 'jobman' ) . '</p>';
+		}
+
+		echo $after_widget;
+    }
+
+    function update( $new_instance, $old_instance ) {
+		return $new_instance;
+    }
+
+    function form( $instance ) {
+		$title = '';
+		if( array_key_exists( 'title', $instance ) )
+			$title = esc_attr( $instance['title'] );
+?>
+            <p>
+				<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title', 'jobman' ); ?>: 
+					<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo $title; ?>" />
+				</label>
+			</p>
+<?php
+			$jobs = esc_attr( $instance['jobs'] );
+?>
+            <p>
+				<label for="<?php echo $this->get_field_id( 'jobs' ); ?>"><?php _e( 'Comma separated list of Job IDs', 'jobman' ); ?>: 
+					<input class="widefat" id="<?php echo $this->get_field_id( 'jobs' ); ?>" name="<?php echo $this->get_field_name( 'jobs' ); ?>" type="text" value="<?php echo $jobs; ?>" />
+				</label>
+			</p>
+<?php
+	}
+
+}
+
 ?>

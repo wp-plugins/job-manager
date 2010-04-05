@@ -1,7 +1,10 @@
 <?php //encoding: utf-8
 
-// Hooks for initial setup
+// Hook for initial setup
 register_activation_hook( WP_PLUGIN_DIR . '/' . JOBMAN_FOLDER . '/job-manager.php', 'jobman_activate' );
+
+// Huh. Upgrades.
+add_filter( 'upgrader_post_install', 'jobman_activate' );
 
 // Translation hook
 add_action( 'init', 'jobman_load_translation_file' );
@@ -42,6 +45,7 @@ add_action( 'do_feed_jobman', 'jobman_rss_feed', 1, 1 );
 add_action('widgets_init', create_function('', 'return register_widget("JobmanLatestJobsWidget");'));
 add_action('widgets_init', create_function('', 'return register_widget("JobmanCategoriesWidget");'));
 add_action('widgets_init', create_function('', 'return register_widget("JobmanHighlightedJobsWidget");'));
+add_action('widgets_init', create_function('', 'return register_widget("JobmanJobsWidget");'));
 
 //
 // Admin Hooks
@@ -52,6 +56,8 @@ add_action( 'admin_menu', 'jobman_admin_setup' );
 add_filter( 'plugin_row_meta', 'jobman_plugin_row_meta', 10, 2 );
 // For the application rating AJAX call
 add_action( 'wp_ajax_jobman_rate_application', 'jobman_rate_application' );
+// For the interview rating AJAX call
+add_action( 'wp_ajax_jobman_rate_interview', 'jobman_rate_interview' );
 
 //
 // Plugins

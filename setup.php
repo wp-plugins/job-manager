@@ -13,6 +13,7 @@ function jobman_activate() {
 	}
 
 	jobman_page_taxonomy_setup();
+	jobman_load_translation_file();
 	
 	if( '' == $dbversion ) {
 		// Never been run, create the database.
@@ -34,11 +35,16 @@ function jobman_activate() {
 function jobman_create_default_settings() {
 	$options = array(
 					'default_email' => get_option( 'admin_email' ),
-					'list_type' => 'full',
+					'date_format' => '',
 					'application_email_from' => 4,
 					'application_email_from_fields' => array( 2, 3 ),
-					'application_email_subject_text' => 'Job Application:',
+					'application_email_subject_text' => __( 'Job Application', 'jobman' ) . ':',
 					'application_email_subject_fields' => array( 2, 3 ),
+					'interviews' => 1,
+					'interview_default_view' => 'month',
+					'interview_title_text' => '',
+					'interview_title_fields' => array( 2, 3 ),
+					'jobs_per_page' => 0,
 					'promo_link' => 0,
 					'user_registration' => 0,
 					'user_registration_required' => 0,
@@ -68,22 +74,35 @@ function jobman_create_default_settings() {
 								'job_title_prefix' => __( 'Job', 'jobman' ) . ': ',
 								'application_acceptance' => __( 'Thank you for your application! We\'ll check it out, and get back to you soon!', 'jobman' )
 							),
+					'templates' => array( 
+									'application_form' => ''
+								),
 					'plugins' => array(
 									'gxs' => 1,
 									'sicaptcha' => 0
+								),
+					'api_keys' => array(
+									'google_maps' => ''
 								)
 				);
 
-	$options['templates'] = array();
+	$titletext = __( 'Title', 'jobman' );
+	$cattext = __( 'Categories', 'jobman' );
+	$applynowtext = __( 'Apply Now', 'jobman' );
+	
+	$navprevious = sprintf( __( 'Page %1s', 'jobman' ), '[job_page_previous_number]' );
+	$navnext = sprintf( __( 'Page %1s', 'jobman' ), '[job_page_next_number]' );
+	$navdesc = sprintf( __( 'Jobs %1s-%2s of %3s', 'jobman' ), '[job_page_minimum]', '[job_page_maximum]', '[job_total]' );
+	
 	$options['templates']['job'] = <<<EOT
 <table class="job-table[if_job_highlighted] highlighted[/if_job_highlighted]">
   <tr>
-    <th scope="row">Title</th>
+    <th scope="row">$titletext</th>
     <td>[job_icon] [job_title]</td>
   </tr>
 [if_job_categories]
   <tr>
-     <th scope="row">Categories</th>
+     <th scope="row">$cattext</th>
      <td>[job_category_links]</td>
   </tr>
 [/if_job_categories]
@@ -97,7 +116,7 @@ function jobman_create_default_settings() {
 [/job_field_loop]
   <tr>
     <td></td>
-    <td class="jobs-applynow">[job_apply_link]Apply Now[/job_apply_link]</td>
+    <td class="jobs-applynow">[job_apply_link]{$applynowtext}[/job_apply_link]</td>
   </tr>
 </table>	
 EOT;
@@ -106,12 +125,12 @@ EOT;
 <div class="job[job_row_number] job[job_id] [job_odd_even]">
 <table class="job-table[if_job_highlighted] highlighted[/if_job_highlighted]">
   <tr>
-    <th scope="row">Title</th>
+    <th scope="row">$titletext</th>
     <td>[job_icon] [job_link][job_title][/job_link]</td>
   </tr>
 [if_job_categories]
   <tr>
-     <th scope="row">Categories</th>
+     <th scope="row">$cattext</th>
      <td>[job_category_links]</td>
   </tr>
 [/if_job_categories]
@@ -125,11 +144,19 @@ EOT;
 [/job_field_loop]
   <tr>
     <td></td>
-    <td class="jobs-applynow">[job_apply_link]Apply Now[/job_apply_link]</td>
+    <td class="jobs-applynow">[job_apply_link]{$applynowtext}[/job_apply_link]</td>
   </tr>
 </table>
 </div><br/><br/>
 [/job_loop]
+
+[if_job_page_count]
+<div class="job-nav">
+	<div class="previous">[job_page_previous_link]{$navprevious}[/job_page_previous_link]</div>
+	<div class="this">$navdesc</div>
+	<div class="next">[job_page_next_link]{$navnext}[/job_page_next_link]</div>
+</div>
+[/if_job_page_count]
 EOT;
 
 	update_option( 'jobman_options', $options );
@@ -303,6 +330,34 @@ EOT;
 </table>
 </div><br/><br/>
 [/job_loop]
+EOT;
+		}
+		
+		if( $oldversion < 14 ) {
+			$options['templates']['application_form'] = '';
+			$options['multi_applications'] = 0;
+			$options['api_keys'] = array(
+										'google_maps' => ''
+									);
+			$options['interviews'] = 1;
+			$options['interview_default_view'] = 'month';
+			$options['interview_title_text'] = '';
+			$options['interview_title_fields'] = array();
+			$options['date_format'] = '';
+
+			$navprevious = sprintf( __( 'Page %1s', 'jobman' ), '[job_page_previous_number]' );
+			$navnext = sprintf( __( 'Page %1s', 'jobman' ), '[job_page_next_number]' );
+			$navdesc = sprintf( __( 'Jobs %1s-%2s of %3s', 'jobman' ), '[job_page_minimum]', '[job_page_maximum]', '[job_total]' );
+			
+			$options['templates']['job_list'] .= <<<EOT
+
+[if_job_page_count]
+<div class="job-nav">
+	<div class="previous">[job_page_previous_link]{$navprevious}[/job_page_previous_link]</div>
+	<div class="this">$navdesc</div>
+	<div class="next">[job_page_next_link]{$navnext}[/job_page_next_link]</div>
+</div>
+[/if_job_page_count]
 EOT;
 		}
 		

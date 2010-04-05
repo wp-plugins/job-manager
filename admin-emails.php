@@ -30,7 +30,7 @@ function jobman_list_emails() {
 <?php
 	$args = array();
 	$args['post_type'] = 'jobman_email';
-	$args['post_status'] = array( 'private', 'publish' );
+	$args['post_status'] = 'private,publish';
 	$args['offset'] = 0;
 	$args['numberposts'] = -1;
 
@@ -145,16 +145,12 @@ function jobman_application_mailout() {
 	$emails = array();
 	$appids = array();
 	foreach( $apps as $app ) {
-		$appmeta = get_post_custom( $app->ID );
-		if( ! array_key_exists("data$fromid", $appmeta ) || '' == $appmeta["data$fromid"] )
+		$email = get_post_meta( $app, "data$fromid", true );
+		if( empty( $email ) )
 			// No email for this application
 			continue;
 
-		if( is_array( $appmeta["data$fromid"] ) )
-			$emails[] = $appmeta["data$fromid"][0];
-		else
-			$emails[] = $appmeta["data$fromid"];
-			
+		$emails[] = $email;
 		$appids[] = $app->ID;
 	}
 	$email_str = implode( ', ', array_unique( $emails ) );

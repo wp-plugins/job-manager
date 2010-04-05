@@ -14,21 +14,27 @@ require_once( dirname( __FILE__ ) . '/admin-application-form.php' );
 require_once( dirname( __FILE__ ) . '/admin-applications.php' );
 // Emails
 require_once( dirname( __FILE__ ) . '/admin-emails.php' );
-
+// Interview Scheduling
+require_once( dirname( __FILE__ ) . '/admin-interviews.php' );
+// Comment handling functions
+require_once( dirname( __FILE__ ) . '/admin-comments.php' );
 
 function jobman_admin_setup() {
+	$options = get_option( 'jobman_options' );
 	// Setup the admin menu item
-	$file = WP_PLUGIN_DIR . '/' . JOBMAN_FOLDER . '/job-manager.php';
 	$pages = array();
-	add_menu_page( __( 'Job Manager', 'jobman' ), __( 'Job Manager', 'jobman' ), 'publish_posts', $file, 'jobman_conf' );
-	$pages[] = add_submenu_page( $file, __( 'Job Manager', 'jobman' ), __( 'Admin Settings', 'jobman' ), 'manage_options', $file, 'jobman_conf' );
-	$pages[] = add_submenu_page( $file, __( 'Job Manager', 'jobman' ), __( 'Display Settings', 'jobman' ), 'manage_options', 'jobman-display-conf', 'jobman_display_conf' );
-	$pages[] = add_submenu_page( $file, __( 'Job Manager', 'jobman' ), __( 'App. Form Settings', 'jobman' ), 'manage_options', 'jobman-application-setup', 'jobman_application_setup' );
-	$pages[] = add_submenu_page( $file, __( 'Job Manager', 'jobman' ), __( 'Job Form Settings', 'jobman' ), 'manage_options', 'jobman-job-setup', 'jobman_job_setup' );
-	$pages[] = add_submenu_page( $file, __( 'Job Manager', 'jobman' ), __( 'Add Job', 'jobman' ), 'publish_posts', 'jobman-add-job', 'jobman_add_job' );
-	$pages[] = add_submenu_page( $file, __( 'Job Manager', 'jobman' ), __( 'List Jobs', 'jobman' ), 'publish_posts', 'jobman-list-jobs', 'jobman_list_jobs' );
-	$pages[] = add_submenu_page( $file, __( 'Job Manager', 'jobman' ), __( 'List Applications', 'jobman' ), 'read_private_pages', 'jobman-list-applications', 'jobman_list_applications' );
-	$pages[] = add_submenu_page( $file, __( 'Job Manager', 'jobman' ), __( 'List Emails', 'jobman' ), 'read_private_pages', 'jobman-list-emails', 'jobman_list_emails' );
+	add_menu_page( __( 'Job Manager', 'jobman' ), __( 'Job Manager', 'jobman' ), 'publish_posts', 'jobman-conf', 'jobman_conf' );
+	$pages[] = add_submenu_page( 'jobman-conf', __( 'Job Manager', 'jobman' ), __( 'Admin Settings', 'jobman' ), 'manage_options', 'jobman-conf', 'jobman_conf' );
+	$pages[] = add_submenu_page( 'jobman-conf', __( 'Job Manager', 'jobman' ), __( 'Display Settings', 'jobman' ), 'manage_options', 'jobman-display-conf', 'jobman_display_conf' );
+	$pages[] = add_submenu_page( 'jobman-conf', __( 'Job Manager', 'jobman' ), __( 'App. Form Settings', 'jobman' ), 'manage_options', 'jobman-application-setup', 'jobman_application_setup' );
+	$pages[] = add_submenu_page( 'jobman-conf', __( 'Job Manager', 'jobman' ), __( 'Job Form Settings', 'jobman' ), 'manage_options', 'jobman-job-setup', 'jobman_job_setup' );
+	$pages[] = add_submenu_page( 'jobman-conf', __( 'Job Manager', 'jobman' ), __( 'Add Job', 'jobman' ), 'publish_posts', 'jobman-add-job', 'jobman_add_job' );
+	$pages[] = add_submenu_page( 'jobman-conf', __( 'Job Manager', 'jobman' ), __( 'List Jobs', 'jobman' ), 'publish_posts', 'jobman-list-jobs', 'jobman_list_jobs' );
+	$pages[] = add_submenu_page( 'jobman-conf', __( 'Job Manager', 'jobman' ), __( 'List Applications', 'jobman' ), 'read_private_pages', 'jobman-list-applications', 'jobman_list_applications' );
+	$pages[] = add_submenu_page( 'jobman-conf', __( 'Job Manager', 'jobman' ), __( 'List Emails', 'jobman' ), 'read_private_pages', 'jobman-list-emails', 'jobman_list_emails' );
+	
+	if( $options['interviews'] )
+		$pages[] = add_submenu_page( 'jobman-conf', __( 'Job Manager', 'jobman' ), __( 'Interviews', 'jobman' ), 'read_private_pages', 'jobman-interviews', 'jobman_interviews' );
 
 	// Load our header info
 	foreach( $pages as $page ) {
@@ -64,20 +70,29 @@ function jobman_admin_header() {
 <script type="text/javascript"> 
 //<![CDATA[
 addLoadEvent(function() {
-	jQuery(".datepicker").datepicker({dateFormat: 'yy-mm-dd', changeMonth: true, changeYear: true, gotoCurrent: true});
+	jQuery(".datepicker").datepicker({
+								dateFormat: 'yy-mm-dd', 
+								changeMonth: true, 
+								changeYear: true, 
+								gotoCurrent: true,
+								showOn: 'button',
+								buttonImage: '<?php echo JOBMAN_URL ?>/images/calendar.gif',
+								buttonImageOnly: true
+							});
 	jQuery(".column-cb > *").click(function() { jQuery(".check-column > *").attr('checked', jQuery(this).is(':checked')) } );
 	
 	jQuery("div.star-holder img").click(function() {
-	    var class = jQuery(this).parent().attr("class");
-		var count = class.replace("star star", "");
+	    var cssclass = jQuery(this).parent().attr("class");
+		var count = cssclass.replace("star star", "");
 		jQuery(this).parent().parent().find("input[name=jobman-rating]").attr("value", count);
 		jQuery(this).parent().parent().find("div.star-rating").css("width", (count * 19) + "px");
 		
         var data = jQuery(this).parent().parent().find("input[name=callbackid]");
+        var func = jQuery(this).parent().parent().find("input[name=callbackfunction]");
         var callback;
         if( data.length > 0 ) {
 			callback = {
-			        action: 'jobman_rate_application',
+			        action: func[0].value,
 			        appid: data[0].value,
 			        rating: count
 			};
@@ -87,8 +102,8 @@ addLoadEvent(function() {
 	});
 	
 	jQuery("div.star-holder img").mouseenter(function() {
-	    var class = jQuery(this).parent().attr("class");
-		var count = class.replace("star star", "");
+	    var cssclass = jQuery(this).parent().attr("class");
+		var count = cssclass.replace("star star", "");
 		jQuery(this).parent().parent().find("div.star-rating").css("width", (count * 19) + "px");
 	});
 
@@ -98,14 +113,14 @@ addLoadEvent(function() {
 	});
 });
 
-function jobman_reset_rating( application ) {
-	jQuery( "#jobman-rating-" + application ).attr("value", 0);
-	jQuery( "#jobman-star-rating-" + application ).css("width", "0px");
+function jobman_reset_rating( id, func ) {
+	jQuery( "#jobman-rating-" + id ).attr("value", 0);
+	jQuery( "#jobman-star-rating-" + id ).css("width", "0px");
 	
-	if( "filter" != application ) {
+	if( "filter" != id ) {
 		callback = {
-				action: 'jobman_rate_application',
-				appid: application,
+				action: func,
+				appid: id,
 				rating: 0
 		};
 		
@@ -134,6 +149,18 @@ function jobman_print_about_box() {
 			<li><a href="http://twitter.com/garypendergast"><?php _e( 'Follow me on Twitter!', 'jobman' ) ?></a></li>
 			<li><a href="http://pento.net/projects/wordpress-job-manager-plugin/"><?php _e( 'Plugin Homepage', 'jobman' ) ?></a></li>
 			<li><a href="http://code.google.com/p/wordpress-job-manager/issues/list"><?php _e( 'Submit a Bug/Feature Request', 'jobman' ) ?></a></li>
+		</ul>
+<?php
+}
+
+function jobman_print_translators_box() {
+?>
+		<p><?php _e( "If you're using Job Manager in a language other than English, you have some of my wonderful translators to thank for it!", 'jobman' ) ?></p>
+		<p><?php printf( __( "If you're fluent in a language not listed here, and would like to appear on this list, please <a href='%1s'>contact me</a>!", 'jobman' ), 'http://pento.net/contact/' ) ?>
+		<ul>
+			<li><strong><?php _e( 'Dutch', 'jobman' ) ?></strong> - <a href="http://www.centrologic.nl/">Patrick Tessels</a>, <a href="http://webtaurus.nl/">Henk van den Bor</a></li>
+			<li><strong><?php _e( 'French', 'jobman' ) ?></strong> - <a href="http://www.procure-smart.com/">Fabrice Fotso</a>, Vincent Clady</li>
+			<li><strong><?php _e( 'German', 'jobman' ) ?></strong> - <a href="http://www.tolingo.com/">tolingo translations</a></li>
 		</ul>
 <?php
 }

@@ -3,7 +3,7 @@
 Plugin Name: Job Manager
 Plugin URI: http://pento.net/projects/wordpress-job-manager-plugin/
 Description: A job listing and job application management plugin for WordPress.
-Version: 0.6.6
+Version: 0.7-beta1
 Author: Gary Pendergast
 Author URI: http://pento.net/
 Text Domain: jobman
@@ -30,12 +30,13 @@ Tags: job, jobs, manager, list, listing, employment, employer, career
 */
 
 // Version
-define( 'JOBMAN_VERSION', '0.6.6' );
-define( 'JOBMAN_DB_VERSION', 13 );
+define( 'JOBMAN_VERSION', '0.7-beta1' );
+define( 'JOBMAN_DB_VERSION', 15 );
 
 // Define the URL to the plugin folder
 define( 'JOBMAN_FOLDER', 'job-manager' );
-define( 'JOBMAN_URL', WP_PLUGIN_URL . '/' . JOBMAN_FOLDER );
+if( ! defined( 'JOBMAN_URL' ) )
+	define( 'JOBMAN_URL', WP_PLUGIN_URL . '/' . JOBMAN_FOLDER );
 
 // Define the basename
 define( 'JOBMAN_BASENAME', plugin_basename(__FILE__) );
@@ -43,7 +44,13 @@ define( 'JOBMAN_BASENAME', plugin_basename(__FILE__) );
 // Some Global vars
 
 global $jobman_shortcodes;
-$jobman_shortcodes = array( 'job_loop', 'job_row_number', 'job_id', 'job_highlighted', 'job_odd_even', 'job_link', 'job_icon', 'job_title', 'job_field', 'job_field_label', 'job_categories', 'job_category_links', 'job_field_loop', 'job_apply_link' );
+$jobman_shortcodes = array( 'job_loop', 'job_row_number', 'job_id', 'job_highlighted', 'job_odd_even', 
+							'job_link', 'job_icon', 'job_title', 'job_field', 'job_field_label', 
+							'job_categories', 'job_category_links', 'job_field_loop', 'job_apply_link', 
+							'job_checkbox', 'job_apply_multi', 'job_page_count', 'job_page_previous_link',
+							'job_page_previous_number', 'job_page_next_link', 'job_page_next_number',
+							'job_page_minimum', 'job_page_maximum', 'job_total', 'current_category_name',
+							'current_category_link' );
 
 $jobman_options = get_option( 'jobman_options' );
 global $jobman_field_shortcodes;
@@ -51,6 +58,15 @@ $jobman_field_shortcodes = array();
 if( is_array( $jobman_options ) && array_key_exists( 'job_fields', $jobman_options ) )
 	foreach( $jobman_options['job_fields'] as $fid => $field )
 		$jobman_field_shortcodes[] = "job_field$fid";
+
+global $jobman_app_shortcodes;
+$jobman_app_shortcodes = array( 'job_app_submit', 'job_links', 'job_list', 'cat_list' );
+
+global $jobman_app_field_shortcodes;
+$jobman_app_field_shortcodes = array();
+if( is_array( $jobman_options ) && array_key_exists( 'fields', $jobman_options ) )
+	foreach( $jobman_options['fields'] as $fid => $field )
+		$jobman_app_field_shortcodes[] = "job_app_field$fid";
 
 //
 // Load Jobman
