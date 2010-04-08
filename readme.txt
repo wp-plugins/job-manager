@@ -22,11 +22,11 @@ Do you speak a language other than English? Do you have time to translate some s
     *    Icons can be assigned to jobs, to make them stand out in the listing
 	*    Customisable fields, so you can display information about your jobs specific to your situation
 	*    Powerful templating system, allowing you to control the look and feel of your jobs and job boards
-	*    Jobs can be easily archived or made public as needed
 	*    Widgets to fit into your WordPress theme
 *    *Job Management*
     *    Jobs can be defined to display between certain dates, or indefinitely
     *    Simple admin interface for editing, updating and creating jobs
+	*    Jobs can be easily archived or made public as needed
 *    *Applications*
     *    Applicants can apply through the website, using a form that you can customize and template, so you get the information you need
     *    Advanced filtering on application forms, to ensure you only get applications that match your criteria: [Documentation](http://code.google.com/p/wordpress-job-manager/wiki/CustomApplicationForm)
@@ -34,7 +34,7 @@ Do you speak a language other than English? Do you have time to translate some s
 *    *Applicant Management*
     *    Simple interface for viewing all applicants
     *    List can be filtered based on any criteria in your custom application form
-    *    Email individual or groups of candidates, to keep them updated on new job opportunities in your organisation
+    *    Email individuals or groups of candidates, to keep them updated on new job opportunities in your organisation
 	*    Interview scheduling, linked directly to jobs and applications
 	*    Internal comments, for easy reference when you need to decide
 
@@ -104,10 +104,10 @@ If you want a [CAPTCHA](http://en.wikipedia.org/wiki/CAPTCHA) on your Applicatio
 
 Notice the version number in brackets. This is the version series that the translation is up-to-date with. If that version series is lower than the current release, you can still use the translation, there just may be some strings that still show in English. If you'd like to add your own language, or help keep an existing language up-to-date, please [contact me](http://pento.net/contact/)!
 
-* Dutch Translation (0.6.x), provided by [Patrick Tessels](http://www.centrologic.nl/) and [Henk van den Bor](http://webtaurus.nl/)
+* Dutch Translation (0.7-beta2), provided by [Patrick Tessels](http://www.centrologic.nl/) and [Henk van den Bor](http://webtaurus.nl/)
 * French Translation (0.6.x, frontend complete, admin 95% complete), provided by [Fabrice Fotso](http://www.procure-smart.com/) and Vincent Clady
 * German Translation (0.6.x), provided by [tolingo translations](http://www.tolingo.com/)
-* Spanish Translation (0.6.x), provided by [TradiArt](http://www.tradiart.com)
+* Spanish Translation (0.7-beta2), provided by [TradiArt](http://www.tradiart.com)
 
 = Special Thanks =
 
@@ -118,6 +118,16 @@ Notice the version number in brackets. This is the version series that the trans
 Print Icon courtesy of [VisualPharm](http://www.visualpharm.com/), under a [CC BY-ND](http://creativecommons.org/licenses/by-nd/3.0/) license.
 
 == Changelog ==
+
+= 0.7-beta3 =
+* UPDATED: Dutch translation, provided by [Patrick Tessels](http://www.centrologic.nl/)
+* UPDATED: Spanish translation, provided by [TradiArt](http://www.tradiart.com)
+* FIXED: Jobs Per Page default setting missing from upgrade
+* FIXED: Missing Spanish translation credits
+* FIXED: Uninstall not working properly
+* FIXED: Job lists not obeying ASC/DESC sorting setting
+* FIXED: Upload error message causing PHP error
+* FIXED: New installation settings not being translated
 
 = 0.7-beta2 =
 * FIXED: Upgrade function didn't work correctly
