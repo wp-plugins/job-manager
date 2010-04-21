@@ -4,7 +4,7 @@ Donate link: http://pento.net/donate/
 Tags: jobs, job, manager, list, listing, employer, application, board
 Requires at least: 2.9
 Tested up to: 3.0-beta1
-Stable tag: trunk
+Stable tag: 0.7
 
 A job listing and job application management plugin for WordPress.
 
@@ -110,16 +110,29 @@ Notice the version number in brackets. This is the version series that the trans
 = Special Thanks =
 
 * [EuroPlacements](http://europlacements.it/), for their input and support of the initial development of Job Manager.
-* [Automattic](http://automattic.com/), for their support and continued feedback on features, design and usability.
+* [Automattic](http://automattic.com/), for their support and feedback on features, design and usability.
 * All the wonderful people who've submitted bugs, feedback and feature requests - you're the people who keep me with things to work on!
 
 Print Icon courtesy of [VisualPharm](http://www.visualpharm.com/), under a [CC BY-ND](http://creativecommons.org/licenses/by-nd/3.0/) license.
 
 == Changelog ==
 
+= 0.7.1 =
+* ADDED: 'category-foo-job.php' template, which overrides 'category-foo.php' when viewing a job in the category 'foo'
+* ADDED: ref attribute to [job_apply_link] shortcode
+* CHANGED: Job editor now uses TinyMCE for editing textareas
+* CHANGED: Applications filter box now displays quicker
+* CHANGED: Settings now on one page, with tabs
+* FIXED: Job multi-select popout now has `<label>` tags
+* FIXED: JavaScript error with Geoloc code in Chrome Dev Channel
+* FIXED: RSS feed showing wrong publication dates
+* FIXED: Authors could edit jobs created by other Authors
+* FIXED: Using ASCII instead of &larr; on Application Details page
+* FIXED: Application filter not working on un-rated applications
+
 = 0.7 =
 * ADDED: Optional template for application form
-* ADDED: <select> type to application forms
+* ADDED: `<select>` type to application forms
 * ADDED: Ability to apply for multiple jobs at once
 * ADDED: Job selector in application form
 * ADDED: Geolocation field to application form
