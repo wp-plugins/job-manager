@@ -43,6 +43,7 @@ Related links:
 * [Report Bugs and Request Features](http://code.google.com/p/wordpress-job-manager/issues/list)
 * [Development Roadmap](http://code.google.com/p/wordpress-job-manager/wiki/Roadmap)
 * [Translations](http://translations.pento.net/)
+* [Mailing List](http://groups.google.com/group/wordpress-job-manager)
 
 == Installation ==
 
@@ -116,6 +117,12 @@ Notice the version number in brackets. This is the version series that the trans
 Print Icon courtesy of [VisualPharm](http://www.visualpharm.com/), under a [CC BY-ND](http://creativecommons.org/licenses/by-nd/3.0/) license.
 
 == Changelog ==
+
+= 0.7.3 =
+* FIXED: Application email not sending if no email set for the categories
+* FIXED: Application form required field check sometimes failing
+* FIXED: Authors being able to archive or delete other users posts
+* FIXED: Category widget breaking WP < 3.0
 
 = 0.7.2 =
 * FIXED: PHP Warning showing on job pages
