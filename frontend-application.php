@@ -324,6 +324,8 @@ function jobman_generate_job_select( $cat, $type = 'select' ) {
 		$closebutton = '<span id="jobman-jobselect-close"><a href="#">[x]</a></span>';
 	}
 	
+	$selected_job = get_query_var( 'jobman_data' );
+
 	switch( $type ) {
 		case 'popout':
 		case 'individual':
@@ -334,6 +336,8 @@ function jobman_generate_job_select( $cat, $type = 'select' ) {
 				if( array_key_exists( 'jobman-joblist', $_REQUEST ) && in_array( $job->ID, $_REQUEST['jobman-joblist'] ) )
 					$checked = ' checked="checked"';
 				if( array_key_exists( 'jobman-jobid', $_REQUEST ) && $job->ID == $_REQUEST['jobman-jobid'] )
+					$checked = ' checked="checked"';
+				if( $job->ID == $selected_job )
 					$checked = ' checked="checked"';
 				$content .= "<span><label><input type='$inputtype' name='jobman-jobselect$inputarray' title='$job->post_title' value='$job->ID'$checked /> $job->post_title</label></span>";
 			}
@@ -477,6 +481,9 @@ function jobman_store_application( $jobid, $cat ) {
 
 	$dir = dirname( $_SERVER['SCRIPT_FILENAME'] );
 
+	if( ! file_exists( "$dir/wp-admin/includes/file.php" ) )
+		$dir = WP_CONTENT_DIR . '/..';
+	
 	require_once( "$dir/wp-admin/includes/file.php" );
 	require_once( "$dir/wp-admin/includes/image.php" );
 	require_once( "$dir/wp-admin/includes/media.php" );

@@ -283,6 +283,9 @@ function jobman_display_jobs( $posts ) {
 function jobman_display_init() {
 	$options = get_option( 'jobman_options' );
 	
+	if( defined( 'WP_ADMIN' ) && WP_ADMIN )
+		return;
+	
 	wp_enqueue_script( 'jquery-ui-datepicker', JOBMAN_URL . '/js/jquery-ui-datepicker.js', array( 'jquery-ui-core' ), JOBMAN_VERSION );
 	wp_enqueue_script( 'google-gears', JOBMAN_URL . '/js/gears_init.js', false, JOBMAN_VERSION );
 	wp_enqueue_script( 'jquery-display', JOBMAN_URL . '/js/display.js', false, JOBMAN_VERSION );
@@ -302,8 +305,6 @@ function jobman_display_template() {
 	if( ! $jobman_displaying )
 		return;
 	
-	// Code gleefully copied from wp-includes/theme.php
-
 	$root = get_page( $options['main_page'] );
 	$id = $root->ID;
 	$template = get_post_meta( $id, '_wp_page_template', true );
@@ -358,40 +359,6 @@ function jobman_display_template() {
 		// The exit tells WP to not try to load any more templates
 		exit;
 	}
-}
-
-function jobman_display_title( $title, $sep, $seploc ) {
-	global $jobman_displaying, $wp_query;
-
-	if( ! $jobman_displaying )
-		return $title;
-
-	$post = $wp_query->post;
-	
-	switch( $post->post_type ) {
-		case 'jobman_job':
-			$newtitle = $post->post_title;
-			break;
-		case 'jobman_app_form':
-			$newtitle = __( 'Job Application', 'jobman' );
-			break;
-		case 'jobman_joblist':
-			$newtitle = __( 'Job Listing', 'jobman' ) . ': ' . $post->post_title;
-			break;
-		default:
-			$newtitle = __( 'Job Listing', 'jobman' );
-			break;
-	}
-	
-	if( '' == $newtitle )
-		return $title;
-
-	if( 'right' == $seploc )
-		$title = "$newtitle $sep ";
-	else
-		$title = " $sep $newtitle";
-	
-	return $title;
 }
 
 function jobman_display_head() {
