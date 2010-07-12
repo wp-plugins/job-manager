@@ -81,9 +81,13 @@ For a full description of how to use the application form customization features
 
 Apache's `mod_mime_magic` doesn't recognise docx file type properly, and older versions of Apache don't have docx in their mime.types file. You should update your copy of Apache to something more recent, or (if you're unable to update or turn off `mod_mime_magic`) create a .htaccess file as [described here](http://www.webdeveloper.com/forum/showpost.php?p=898935&postcount=2).
 
-= I can't upload DOC files in WordPress MU =
+= I can't upload DOC files in WordPress MultiSite =
 
-In your WordPress MU admin, go to Site Admin->Options. Update the "Upload File Types" option to include the various extensions (doc, docx, pdf, odt) that people are likely to upload their resume with.
+In your WordPress MultiSite admin, go to Site Admin->Options. Update the "Upload File Types" option to include the various extensions (doc, docx, pdf, odt) that people are likely to upload their resume with.
+
+= When I create a new site in WordPress MultiSite, Job Manager doesn't work on the new site =
+
+This is a known problem with WordPress not activating plugins correctly when a new site is created. Please install the [Proper Network Activation plugin](http://wordpress.org/extend/plugins/proper-network-activation/) as a workaround.
 
 == Other Plugin Support ==
 
@@ -103,6 +107,7 @@ If you want a [CAPTCHA](http://en.wikipedia.org/wiki/CAPTCHA) on your Applicatio
 
 Notice the version number in brackets. This is the version series that the translation is up-to-date with. If that version series is lower than the current release, you can still use the translation, there just may be some strings that still show in English. If you'd like to add your own language, or help keep an existing language up-to-date, please [contact me](http://pento.net/contact/)!
 
+* Danish Translation (0.7.x), provided by [Caspar Lange](http://www.lithin.com/)
 * Dutch Translation (0.7.x, 95% complete), provided by [Patrick Tessels](http://www.centrologic.nl/) and [Henk van den Bor](http://webtaurus.nl/)
 * French Translation (0.7.x), provided by [Fabrice Fotso](http://www.procure-smart.com/) and Vincent Clady
 * German Translation (0.6.x), provided by [tolingo translations](http://www.tolingo.com/)
@@ -117,6 +122,18 @@ Notice the version number in brackets. This is the version series that the trans
 Print Icon courtesy of [VisualPharm](http://www.visualpharm.com/), under a [CC BY-ND](http://creativecommons.org/licenses/by-nd/3.0/) license.
 
 == Changelog ==
+
+= 0.7.8 =
+* ADDED: Danish translation, provided by [Caspar Lange](http://www.lithin.com/)
+* CHANGED: Updated Google Maps API to v3, removed API key settings box
+* FIXED: Some bad HTML in admin area
+* FIXED: Application Email not working
+* FIXED: Application count in admin job list limited to 5
+* FIXED: Incompatibility with Proper Network Activation plugin
+* FIXED: Category links not working in one case
+* FIXED: Restricted height of category lists in admin, for really long lists
+* FIXED: Flushing rewrite rules is expensive, only do it when we must
+* FIXED: Bad main page edit link
 
 = 0.7.7 =
 * UPDATED: French Translation, provided by [Fabrice Fotso](http://www.procure-smart.com/)

@@ -157,7 +157,7 @@ function jobman_list_jobs_data( $jobs, $showexpired = false ) {
 			if( strtotime( $job->post_date ) > time() )
 				$future = true;
 			
-			$children = get_posts( "post_type=jobman_app&meta_key=job&meta_value=$job->ID&post_status=publish,private" );
+			$children = get_posts( "post_type=jobman_app&meta_key=job&meta_value=$job->ID&post_status=publish,private&numberposts=-1" );
 			if( count( $children ) > 0 )
 				$applications = '<a href="' . admin_url( "admin.php?page=jobman-list-applications&amp;jobman-jobid=$job->ID" ) . '">' . count( $children ) . '</a>';
 			else
@@ -314,7 +314,7 @@ function jobman_edit_job( $jobid ) {
 			</tr>
 			<tr>
 				<th scope="row"><?php _e( 'Categories', 'jobman' ) ?></th>
-				<td>
+				<td><div class="jobman-categories-list">
 <?php
 	$categories = get_terms( 'jobman_category', 'hide_empty=0' );
 	if( count( $categories ) > 0 ) {
@@ -334,7 +334,7 @@ function jobman_edit_job( $jobid ) {
 		}
 	}
 ?>
-				</td>
+				</div></td>
 				<td><span class="description"><?php _e( 'Categories that this job belongs to. It will be displayed in the job list for each category selected.', 'jobman' ) ?></span></td>
 			</tr>
 			<tr>

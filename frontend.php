@@ -31,8 +31,17 @@ function jobman_queryvars( $qvars ) {
 function jobman_add_rewrite_rules( $wp_rewrite ) {
 	$options = get_option( 'jobman_options' );
 	
+	$wp_rewrite->rules = $options['rewrite_rules'] + $wp_rewrite->rules;
+}
+
+function jobman_flush_rewrite_rules() {
+	global $wp_rewrite;
+
+	$options = get_option( 'jobman_options' );
+	
 	$root = get_page( $options['main_page'] );
 	$url = get_page_uri( $root->ID );
+
 	if( ! $url )
 		return;
 
@@ -79,12 +88,13 @@ function jobman_add_rewrite_rules( $wp_rewrite ) {
 							'&page=' . $wp_rewrite->preg_index(5),
 					);
 	}
+	
+	if( array_key_exists( 'rewrite_rules', $options ) && $options['rewrite_rules'] == $new_rules )
+		return;
 
-	$wp_rewrite->rules = $new_rules + $wp_rewrite->rules;
-}
+	$options['rewrite_rules'] = $new_rules;
+	update_option( 'jobman_options', $options );
 
-function jobman_flush_rewrite_rules() {
-	global $wp_rewrite;
 	$wp_rewrite->flush_rules( false );
 }
 
@@ -149,8 +159,8 @@ function jobman_display_jobs( $posts ) {
 
 	// Hack to kill WPML on Job Manager pages. Need to add proper support later.
 	if( defined( 'ICL_SITEPRESS_VERSION' ) && ! empty( $sitepress ) ) {
-		remove_filter('posts_join', array($sitepress,'posts_join_filter'));
-		remove_filter('posts_where', array($sitepress,'posts_where_filter'));
+		remove_filter( 'posts_join', array( $sitepress, 'posts_join_filter' ) );
+		remove_filter( 'posts_where', array( $sitepress, 'posts_where_filter' ) );
 	}
 	
 	if( NULL != $post ) {
@@ -288,12 +298,9 @@ function jobman_display_init() {
 	
 	wp_enqueue_script( 'jquery-ui-datepicker', JOBMAN_URL . '/js/jquery-ui-datepicker.js', array( 'jquery-ui-core' ), JOBMAN_VERSION );
 	wp_enqueue_script( 'google-gears', JOBMAN_URL . '/js/gears_init.js', false, JOBMAN_VERSION );
-	wp_enqueue_script( 'jquery-display', JOBMAN_URL . '/js/display.js', false, JOBMAN_VERSION );
+	wp_enqueue_script( 'jobman-display', JOBMAN_URL . '/js/display.js', false, JOBMAN_VERSION );
 	
-	if( !empty( $options['api_keys']['google_maps'] ) ) {
-		wp_enqueue_script( 'google-maps', "http://maps.google.com/maps?file=api&v=2&key={$options['api_keys']['google_maps']}", false, JOBMAN_VERSION );
-		wp_enqueue_script( 'greverse-geocoder', JOBMAN_URL . '/js/greversegeocoder.js', false, JOBMAN_VERSION );
-	}
+	wp_enqueue_script( 'google-maps', "http://maps.google.com/maps/api/js?sensor=true", false );
 	
 	wp_enqueue_style( 'jobman-display', JOBMAN_URL . '/css/display.css', false, JOBMAN_VERSION );
 }
@@ -449,7 +456,7 @@ jQuery(document).ready(function() {
 	if( navigator.geolocation ) {
 		// HTML5
 		geo = navigator.geolocation;
-		geo.getCurrentPosition( jobman_geo_success );
+		geo.getCurrentPosition( jobman_geo_success, jobman_geo_error );
 	}
 	else if( google.gears ) {
 		// Google Gears
@@ -511,38 +518,35 @@ function jobman_update_selected_cats() {
 <?php if( $jobman_geoloc ) { ?>
 function jobman_geo_success( pos ) {
 	var description = "";
+
 	if( pos.address ) {
 		description = pos.address.city + ", " + pos.address.region + ", " + pos.address.country;
 	}
 	else if( pos.gearsAddress ) {
 		description = pos.gearsAddress.city + ", " + pos.gearsAddress.region + ", " + pos.gearsAddress.country;
 	}
-<?php	if( !empty( $options['api_keys']['google_maps'] ) ) { ?>
 	else {
-		var map = new GMap2( document.getElementById( "jobman-map" ) );
-		map.setCenter( new GLatLng( 51.05226693177032, 3.723893165588379 ), 15 );
-		var reversegeocoder = new GReverseGeocoder( map );
+		var latlng = new google.maps.LatLng(40.730885,-73.997383);
+		var myOptions = {
+		  zoom: 8,
+		  center: latlng,
+		  mapTypeId: 'roadmap'
+		}
+		map = new google.maps.Map(document.getElementById("jobman-map"), myOptions);
+		var geocoder = google.maps.Geocoder();
+		var latLng = new google.maps.LatLng( pos.coords.latitude, pos.coords.longitude );
 
-		GEvent.addListener(reversegeocoder, "load",
-			function( placemark ) {
-				description = placemark.AddressDetails.Country.CountryName;
-				if( placemark.AddressDetails.Country.AdministrativeArea ) {
-					description = placemark.AddressDetails.Country.AdministrativeArea.AdministrativeAreaName + ', ' + description;
+		if( geocoder ) {
+			geocoder.geocode( { 'latLng': latLng },
+				function( results, status ) {
+					if( status == google.maps.GeocoderStatus.OK && results[1] ) {
+						jQuery(".jobman-geoloc-original-display").val( results[1].formatted_address );
+						jQuery(".jobman-geoloc-display").val( results[1].formatted_address );
+					}
 				}
-				if( placemark.AddressDetails.Country.AdministrativeArea.SubAdministrativeArea ) {
-					description = placemark.AddressDetails.Country.AdministrativeArea.SubAdministrativeArea.SubAdministrativeAreaName + ', ' + description;
-				}
-				if( placemark.AddressDetails.Country.AdministrativeArea.SubAdministrativeArea.Locality ) {
-					description = placemark.AddressDetails.Country.AdministrativeArea.SubAdministrativeArea.Locality.LocalityName + ', ' + description;
-				}
-				jQuery(".jobman-geoloc-original-display").val( description );
-				jQuery(".jobman-geoloc-display").val( description );
-			}
-		);
-
-		reversegeocoder.reverseGeocode( new GLatLng( pos.coords.latitude, pos.coords.longitude ) );
+			);
+		}
 	}
-<?php	} ?>
 	
 	jQuery(".jobman-geoloc-data").val( pos.coords.latitude + "," + pos.coords.longitude );
 	jQuery(".jobman-geoloc-original-display").val( description );
