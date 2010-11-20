@@ -31,7 +31,8 @@ function jobman_queryvars( $qvars ) {
 function jobman_add_rewrite_rules( $wp_rewrite ) {
 	$options = get_option( 'jobman_options' );
 	
-	$wp_rewrite->rules = $options['rewrite_rules'] + $wp_rewrite->rules;
+	if( ! empty( $wp_rewrite->rules ) && is_array( $wp_rewrite->rules ) )
+		$wp_rewrite->rules = $options['rewrite_rules'] + $wp_rewrite->rules;
 }
 
 function jobman_flush_rewrite_rules() {
@@ -280,6 +281,7 @@ function jobman_display_jobs( $posts ) {
 		$wp_query->queried_object = $posts[0];
 		$wp_query->queried_object_id = $posts[0]->ID;
 		$wp_query->is_page = true;
+		$wp_query->is_singular = true;
 	}
 	
 	$hidepromo = $options['promo_link'];
@@ -299,12 +301,25 @@ function jobman_display_init() {
 	
 	if( defined( 'WP_ADMIN' ) && WP_ADMIN )
 		return;
+		
+	// Check for a geoloc field, so we can decide if we maybe need to include the geoloc JS
+	$include_geoloc = false;
+	if( ! empty( $options['fields'] ) ) {
+		foreach( $options['fields'] as $field ) {
+			if( 'geoloc' == $field['type'] ) {
+				$include_geoloc = true;
+				break;
+			}
+		}
+	}
 	
 	wp_enqueue_script( 'jquery-ui-datepicker', JOBMAN_URL . '/js/jquery-ui-datepicker.js', array( 'jquery-ui-core' ), JOBMAN_VERSION );
-	wp_enqueue_script( 'google-gears', JOBMAN_URL . '/js/gears_init.js', false, JOBMAN_VERSION );
 	wp_enqueue_script( 'jobman-display', JOBMAN_URL . '/js/display.js', false, JOBMAN_VERSION );
-	
-	wp_enqueue_script( 'google-maps', "http://maps.google.com/maps/api/js?sensor=true", false );
+
+	if( $include_geoloc ) {	
+		wp_enqueue_script( 'google-gears', JOBMAN_URL . '/js/gears_init.js', false, JOBMAN_VERSION );
+		wp_enqueue_script( 'google-maps', "http://maps.google.com/maps/api/js?sensor=true", false );
+	}
 	
 	wp_enqueue_style( 'jobman-display', JOBMAN_URL . '/css/display.css', false, JOBMAN_VERSION );
 }
@@ -467,6 +482,7 @@ jQuery(document).ready(function() {
 	}
 	else if( google.gears ) {
 		// Google Gears
+		
 		geo = google.gears.factory.create('beta.geolocation');
 		geo.getCurrentPosition( jobman_geo_success, 
 								jobman_geo_error,

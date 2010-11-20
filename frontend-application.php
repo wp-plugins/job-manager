@@ -1,5 +1,6 @@
 <?php
 function jobman_display_apply( $jobid, $cat = NULL ) {
+	global $si_image_captcha;
 	get_currentuserinfo();
 
 	$options = get_option( 'jobman_options' );
@@ -105,12 +106,12 @@ function jobman_display_apply( $jobid, $cat = NULL ) {
 	}
 	
 	$content .= '<form action="" enctype="multipart/form-data" onsubmit="return jobman_apply_filter()" method="post">';
-	$content .= '<input type="hidden" name="jobman-apply" value="1">';
-	$content .= '<input type="hidden" name="jobman-jobid" value="' . $jobid . '">';
-	$content .= '<input type="hidden" name="jobman-categoryid" value="' . implode( ',', $cat_arr ) . '">';
+	$content .= '<input type="hidden" name="jobman-apply" value="1" />';
+	$content .= '<input type="hidden" name="jobman-jobid" value="' . $jobid . '" />';
+	$content .= '<input type="hidden" name="jobman-categoryid" value="' . implode( ',', $cat_arr ) . '" />';
 	
 	if( array_key_exists( 'jobman-joblist', $_REQUEST ) )
-		$content .= '<input type="hidden" name="jobman-joblist" value="' . implode( ',', $_REQUEST['jobman-joblist'] ) . '">';
+		$content .= '<input type="hidden" name="jobman-joblist" value="' . implode( ',', $_REQUEST['jobman-joblist'] ) . '" />';
 	
 	if( empty( $options['templates']['application_form'] ) ) {
 		$gencat = NULL;
@@ -142,7 +143,7 @@ function jobman_display_apply( $jobid, $cat = NULL ) {
 }
 
 function jobman_display_apply_generated( $foundjob = false, $job = NULL, $cat = NULL ) {
-	global $current_user, $si_image_captcha;
+	global $current_user, $si_image_captcha, $wp_version;
 	$options = get_option( 'jobman_options' );
 	
 	$content = '';
@@ -244,7 +245,10 @@ function jobman_display_apply_generated( $foundjob = false, $job = NULL, $cat = 
 	if( isset( $si_image_captcha ) && $options['plugins']['sicaptcha'] ) {
 		// SI CAPTCHA echos directly to screen. We need to redirect that to our $content buffer.
 		ob_start();
-		$si_image_captcha->si_captcha_comment_form();
+		if( $wp_version[0] > 2 )
+			$si_image_captcha->si_captcha_comment_form_wp3();
+		else
+			$si_image_captcha->si_captcha_comment_form();
 		$content .= '<tr><td colspan="2">' . ob_get_contents() . '</td></tr>';
 		ob_end_clean();
 	}
@@ -508,7 +512,7 @@ function jobman_store_application( $jobid, $cat ) {
 	$_POST['jd_tweet_this'] = 'no';
 	
 	// Check for recent applications for the same job by the same user
-	if( ! empty( $current_user ) && -1 != $jobid ) {
+	if( ! empty( $current_user ) && $current_user->ID > 0 && -1 != $jobid ) {
 		$args = array(
 					'post_status' => 'private',
 					'post_type' => 'jobman_app',
