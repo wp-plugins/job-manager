@@ -3,7 +3,7 @@ Contributors: pento
 Donate link: http://pento.net/donate/
 Tags: jobs, job, manager, list, listing, employer, application, board
 Requires at least: 2.9
-Tested up to: 3.0
+Tested up to: 3.1
 Stable tag: trunk
 
 A job listing and job application management plugin for WordPress.
@@ -103,6 +103,8 @@ If you want a [CAPTCHA](http://en.wikipedia.org/wiki/CAPTCHA) on your Applicatio
 
 Notice the version number in brackets. This is the version series that the translation is up-to-date with. If that version series is lower than the current release, you can still use the translation, there just may be some strings that still show in English. If you'd like to add your own language, or help keep an existing language up-to-date, please [contact me](http://pento.net/contact/)!
 
+* Arabic Translation (0.7.x), provided by Ali Al-Ghalebi
+* Czech Translation (0.7.x), provided by [Lukas](mailto:prdlik@centrum.cz)
 * Danish Translation (0.7.x), provided by [Christian Olesen](http://www.lithin.com/) and [Caspar Lange](http://www.lithin.com/)
 * Dutch Translation (0.7.x, 93% complete), provided by [Patrick Tessels](http://www.centrologic.nl/) and [Henk van den Bor](http://webtaurus.nl/)
 * Estonian Translation (0.7.x), provided by Robert Jakobson
@@ -121,6 +123,15 @@ Notice the version number in brackets. This is the version series that the trans
 Print Icon courtesy of [VisualPharm](http://www.visualpharm.com/), under a [CC BY-ND](http://creativecommons.org/licenses/by-nd/3.0/) license.
 
 == Changelog ==
+
+= 0.7.16 =
+* ADDED: Arabic Translation, provided by Ali Al-Ghalebi
+* ADDED: Czech Translation, provided by [Lukas](mailto:prdlik@centrum.cz)
+* FIXED: Jobs names starting with "register" weren't displaying
+* FIXED: WordPress Import could cause duplicate entries in the job list and widgets
+* FIXED: Category lists weren't displaying properly for some users
+* FIXED: HTML Calendar in the frontend job select
+* FIXED: (Hopefully) Activation error in WordPress Multi Site
 
 = 0.7.15 =
 * CHANGED: "Powered By" line now defaults to off
