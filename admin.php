@@ -55,20 +55,25 @@ function jobman_admin_print_styles() {
 	global $wp_styles;
 	
 	wp_enqueue_style( 'jobman-admin', JOBMAN_URL . '/css/admin.css', false, JOBMAN_VERSION, 'all' );
+	wp_enqueue_style( 'jobman-admin-ie7', JOBMAN_URL . '/css/admin-ie7.css', false, JOBMAN_VERSION, 'all' );
 	wp_enqueue_style( 'jobman-admin-print', JOBMAN_URL . '/css/admin-print.css', false, JOBMAN_VERSION, 'print' );
 	wp_enqueue_style( 'jobman-admin-print-ie7', JOBMAN_URL . '/css/admin-print-ie7.css', false, JOBMAN_VERSION, 'print' );
 	wp_enqueue_style( 'dashboard' );
 	
 	$wp_styles->add_data( 'jobman-admin-print-ie7', 'conditional', 'lte IE 7' );
+	$wp_styles->add_data( 'jobman-admin-ie7', 'conditional', 'lte IE 7' );
 }
 
 function jobman_admin_print_scripts() {
 	wp_enqueue_script( 'jobman-admin', JOBMAN_URL . '/js/admin.js', false, JOBMAN_VERSION );
-	wp_enqueue_script( 'jquery-ui-datepicker', JOBMAN_URL . '/js/jquery-ui-datepicker.js', array( 'jquery-ui-core' ), JOBMAN_VERSION );
+	wp_deregister_script( 'jquery-ui-datepicker' );
+	wp_enqueue_script( 'jquery-ui' );
+	wp_enqueue_script( 'jquery-ui-datepicker', JOBMAN_URL . '/js/jquery-ui-datepicker.js', false, JOBMAN_VERSION );
 	wp_enqueue_script( 'dashboard' );
 }
 
 function jobman_admin_header() {
+	global $wp_version;
 	$options = get_option( 'jobman_options' );
 
 	$textareas = array();
@@ -91,15 +96,14 @@ addLoadEvent(function() {
 								buttonImageOnly: true
 							});
 	jQuery(".column-cb > *").click(function() { jQuery(".check-column > *").attr('checked', jQuery(this).is(':checked')) } );
-	
 	jQuery("div.star-holder img").click(function() {
 	    var cssclass = jQuery(this).parent().attr("class");
 		var count = cssclass.replace("star star", "");
-		jQuery(this).parent().parent().find("input[name=jobman-rating]").attr("value", count);
+		jQuery(this).parent().parent().find('input[name="jobman-rating"]').attr("value", count);
 		jQuery(this).parent().parent().find("div.star-rating").css("width", (count * 19) + "px");
 		
-        var data = jQuery(this).parent().parent().find("input[name=callbackid]");
-        var func = jQuery(this).parent().parent().find("input[name=callbackfunction]");
+        var data = jQuery(this).parent().parent().find('input[name="callbackid"]');
+        var func = jQuery(this).parent().parent().find('input[name="callbackfunction"]');
         var callback;
         if( data.length > 0 ) {
 			callback = {
@@ -119,12 +123,12 @@ addLoadEvent(function() {
 	});
 
 	jQuery("div.star-holder img").mouseleave(function() {
-		var count = jQuery(this).parent().parent().find("input[name=jobman-rating]").attr("value");
+		var count = jQuery(this).parent().parent().find('input[name="jobman-rating"]').attr("value");
 		jQuery(this).parent().parent().find("div.star-rating").css("width", (count * 19) + "px");
 	});
 	
 <?php
-	if( user_can_richedit() ) {
+	if( user_can_richedit()  && version_compare( $wp_version, '3.3-aortic-dissection', '<' ) ) {
 ?>
 	var jobman_textareas = <?php echo json_encode( $textareas ) ?>;
 
@@ -189,6 +193,13 @@ function jobman_print_settings_tabs() {
 	}
 ?>
 		</h2>
+<?php
+}
+
+function jobman_print_other_projects_box() {
+?>
+		<a href="http://ponyedit.com/?utm_source=jobman&utm_medium=banner&utm_campaign=Job%2BManager"><strong>PonyEdit</strong></a>
+		<p><?php _e( 'If you like Job Manager and WordPress, but hate working on remote servers, you\'ll want to check out PonyEdit - a fast new text editor that plays nicely with the cloud!', 'jobman' ) ?></p>
 <?php
 }
 

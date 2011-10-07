@@ -150,7 +150,7 @@ function jobman_shortcode( $atts, $content, $tag ) {
 			switch( $jobman_shortcode_field['type'] ) {
 				case 'date':
 					if( ! empty( $options['date_format'] ) )
-						return date( $options['date_format'], strtotime( $data ) );
+						return date_i18n( $options['date_format'], strtotime( $data ) );
 					else
 						return $data;
 				case 'textarea':
@@ -249,7 +249,7 @@ function jobman_shortcode( $atts, $content, $tag ) {
 			
 			return "<a href='$url'>". do_shortcode( $content ) . '</a>';
 		case 'job_page_next_number':
-			if( array_key_exists( 'page', $wp_query->query_vars ) )
+			if( array_key_exists( 'page', $wp_query->query_vars ) && $wp_query->query_vars['page'] > 1 )
 				$page = $wp_query->query_vars['page'];
 			else
 				$page = 1;
@@ -259,7 +259,7 @@ function jobman_shortcode( $atts, $content, $tag ) {
 				
 			return $page + 1;
 		case 'job_page_next_link':
-			if( array_key_exists( 'page', $wp_query->query_vars ) )
+			if( array_key_exists( 'page', $wp_query->query_vars ) && $wp_query->query_vars['page'] > 1 )
 				$page = $wp_query->query_vars['page'];
 			else
 				$page = 1;
@@ -289,21 +289,21 @@ function jobman_shortcode( $atts, $content, $tag ) {
 			
 			return "<a href='$url'>". do_shortcode( $content ) . '</a>';
 		case 'job_page_minimum':
-			if( array_key_exists( 'page', $wp_query->query_vars ) )
+			if( array_key_exists( 'page', $wp_query->query_vars ) && $wp_query->query_vars['page'] > 1 )
 				$page = $wp_query->query_vars['page'];
 			else
 				$page = 1;
 
 			return ( $page - 1 ) * $options['jobs_per_page'] + 1;
 		case 'job_page_maximum':
-			if( array_key_exists( 'page', $wp_query->query_vars ) )
+			if( array_key_exists( 'page', $wp_query->query_vars ) && $wp_query->query_vars['page'] > 1 )
 				$page = $wp_query->query_vars['page'];
 			else
 				$page = 1;
 
 			return ( $page - 1 ) * $options['jobs_per_page'] + count( $jobman_shortcode_jobs );
 		case 'job_page_current_number':
-			if( array_key_exists( 'page', $wp_query->query_vars ) )
+			if( array_key_exists( 'page', $wp_query->query_vars ) && $wp_query->query_vars['page'] > 1 )
 				$page = $wp_query->query_vars['page'];
 			else
 				$page = 1;
@@ -351,7 +351,7 @@ function jobman_field_shortcode( $atts, $content, $tag ) {
 	switch( $options['job_fields'][$matches[1]]['type'] ) {
 		case 'date':
 			if( ! empty( $options['date_format'] ) )
-				return date( $options['date_format'], strtotime( $data ) );
+				return date_i18n( $options['date_format'], strtotime( $data ) );
 			else
 				return $data;
 		case 'textarea':

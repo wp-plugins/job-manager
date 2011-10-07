@@ -38,6 +38,8 @@ function jobman_add_rewrite_rules( $wp_rewrite ) {
 function jobman_flush_rewrite_rules() {
 	global $wp_rewrite;
 
+	$wp_rewrite->feeds[] = 'jobman';
+
 	$options = get_option( 'jobman_options' );
 	
 	$root = get_page( $options['main_page'] );
@@ -67,7 +69,7 @@ function jobman_flush_rewrite_rules() {
 							'&jobman_page=apply&jobman_data=$matches[2]',
 							"$url/register(/([^/]+))?/?$" => "index.php?jobman_root_id=$root->ID" .
 							'&jobman_page=register&jobman_data=$matches[2]',
-							"$url/feed/?" => "index.php?feed=jobman",
+							"$url/feed/?$" => "index.php?feed=jobman",
 							"$url/([^/]+)/?(page/(\d+)/?)?$" => 'index.php?jobman_data=$matches[1]'.
 							'&page=$matches[3]',
 					);
@@ -83,7 +85,7 @@ function jobman_flush_rewrite_rules() {
 							"($lang)?$url/register(/([^/]+))?/?$" => "index.php?jobman_root_id=$root->ID" .
 							'&lang=$matches[1]' . 
 							'&jobman_page=register&jobman_data=$matches[3]',
-							"($lang)?$url/feed/?" => 'index.php?feed=jobman&lang=$matches[1]',
+							"($lang)?$url/feed/?$" => 'index.php?feed=jobman&lang=$matches[1]',
 							"($lang)?$url/([^/]+)/?(page/(\d+)/?)?$" => 'index.php?jobman_data=$matches[1]' .
 							'&lang=$matches[2]' . 
 							'&page=$matches[4]',
@@ -404,6 +406,8 @@ function jobman_display_head() {
 		$url = get_option( 'home' ) . '?feed=jobman';
 	}
 	else {
+		if( '/' != substr( $url, -1 ) )
+			$url .= '/';
 		$url .= 'feed/';
 	}
 

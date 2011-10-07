@@ -401,7 +401,7 @@ function jobman_generate_cat_select( $cat, $type ) {
 		case 'select':
 		default:
 			$content .= "<select name='jobman-catselect[]' multiple='multiple'>";
-			$content .= '<option value="">' . _e( 'None', 'jobman' ) . '</option>';
+			$content .= '<option value="">' . __( 'None', 'jobman' ) . '</option>';
 			foreach( $categories as $category ) {
 				$selected = '';
 				if( $category->slug == $cat )
@@ -681,10 +681,12 @@ function jobman_check_filters( $jobid, $cat ) {
 			if( array_key_exists( "jobman-field-$id", $_REQUEST ) )
 				$data = $_REQUEST["jobman-field-$id"];
 
-			if( 'checkbox' != $field['type'] )
+			if( is_array( $data ) ) {
+				foreach( $data as $dataid => $datum )
+					$data[$dataid] = esc_attr( trim( $datum ) );
+			}
+			else
 				$data = esc_attr( trim( $data ) );
-			else if( ! is_array( $data ) )
-				$data = array();
 
 			// If the field is mandatory, check that there is data submitted
 			if( $field['mandatory'] ) {

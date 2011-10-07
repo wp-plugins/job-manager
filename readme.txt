@@ -3,7 +3,7 @@ Contributors: pento
 Donate link: http://pento.net/donate/
 Tags: jobs, job, manager, list, listing, employer, application, board
 Requires at least: 2.9
-Tested up to: 3.1
+Tested up to: 3.3
 Stable tag: trunk
 
 A job listing and job application management plugin for WordPress.
@@ -123,6 +123,21 @@ Notice the version number in brackets. This is the version series that the trans
 Print Icon courtesy of [VisualPharm](http://www.visualpharm.com/), under a [CC BY-ND](http://creativecommons.org/licenses/by-nd/3.0/) license.
 
 == Changelog ==
+
+= 0.7.18 =
+* FIXED: Now compatible with WordPress 3.3!
+* FIXED: HTML entities not being encoded properly in job titles
+* FIXED: Could get a warning when submitting applications
+* FIXED: Unable to download the CSV of Applications when MultiSite is enabled
+* FIXED: Incorrect page numbers could show when dividing the jobs list into pages
+* FIXED: Frontend job dates weren't being translated
+* FIXED: A PHP warning in the settings
+* FIXED: Possible JS error with jQuery 1.5
+* FIXED: Incompatibility with jQuery 1.6
+* FIXED: Files attached to jobs are now deleted when the job is deleted
+* FIXED: Incorrectly placed text in the category dropdown on the application form
+* FIXED: Select boxes not displaying properly in IE7
+* FIXED: RSS feed not loading correctly
 
 = 0.7.17 =
 * FIXED: Job Title not displaying on application page
