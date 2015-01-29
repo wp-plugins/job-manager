@@ -1,5 +1,5 @@
 === Job Manager ===
-Contributors: Townsend, Wild
+Contributors: SMB-dev, Wild
 Donate link: http://www.wp-jobmanager.com/donate/
 Plugin URI: http://www.wp-jobmanager.com
 License: GPLv3
@@ -7,17 +7,18 @@ License URI: http://www.gnu.org/licenses/gpl.html
 Tags: jobs, job, manager, list, listing, job listing, job board, board, employer, application, company, hiring, employment, employees, candidate, applicant tracking , talent, recruiting, recruitment  
 Requires at least: 2.9
 Tested up to: 4.1
-Stable tag: trunk
+Stable tag: 7.21
 
 A job listing and job application management plugin for WordPress.
-
-> <strong>More information on this version of Job Manager</strong><br>
-> [ Read Me - Job Manager 7.21 update details](http://www.wp-jobmanager.com/documentation-jm/job-manager-7-21-update/)
 
 
 == Description ==
 
 A plugin for managing job lists and job applications on your WordPress site. It supports all the features you need to manage your organisation's job openings.
+
+> <strong>More information on this version of Job Manager</strong><br>
+> [ Read Me - Job Manager 7.21 update details](http://www.wp-jobmanager.com/documentation-jm/job-manager-7-21-update/)
+
 
 *    *Job Listing*
     *    Categories to create multiple job boards
