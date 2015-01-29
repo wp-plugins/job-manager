@@ -104,9 +104,9 @@ There are 3 ways to install this plugin:
 == Screenshots ==
 
 1. Job Listing Details (admin)
-2. Job LIsting (post)
-3. Job Application - Resume (CVS Submit/Apply)
-4. Custom Completion (submitted message) 
+1. Job LIsting (post)
+1. Job Application - Resume (CVS Submit/Apply)
+1. Custom Completion (submitted message) 
 
 
 == Frequently Asked Questions ==
