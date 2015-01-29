@@ -21,13 +21,13 @@ function jobman_remove_shortcodes( $array ) {
 function jobman_add_field_shortcodes( $array ) {
 	foreach ( (array) $array as $shortcode ) {
 		$conditional = 'if_' . $shortcode;
-		
+
 		$label = $shortcode . '_label';
 		$cond_label = 'if_' . $shortcode . '_label';
-		
+
 		add_shortcode( $shortcode, 'jobman_field_shortcode' );
 		add_shortcode( $conditional, 'jobman_field_shortcode_conditional' );
-		
+
 		add_shortcode( $label, 'jobman_field_shortcode' );
 		add_shortcode( $cond_label, 'jobman_field_shortcode_conditional' );
 	}
@@ -44,16 +44,16 @@ function jobman_add_app_shortcodes( $array ) {
 function jobman_add_app_field_shortcodes( $array ) {
 	foreach ( (array) $array as $shortcode ) {
 		$conditional = 'if_' . $shortcode;
-		
+
 		$label = $shortcode . '_label';
 		$cond_label = 'if_' . $shortcode . '_label';
-		
+
 		$mandatory = $shortcode . '_mandatory';
 		$cond_mandatory = 'if_' . $shortcode . '_mandatory';
-		
+
 		add_shortcode( $shortcode, 'jobman_app_field_shortcode' );
 		add_shortcode( $conditional, 'jobman_app_field_shortcode_conditional' );
-		
+
 		add_shortcode( $label, 'jobman_app_field_shortcode' );
 		add_shortcode( $cond_label, 'jobman_app_field_shortcode_conditional' );
 
@@ -63,7 +63,7 @@ function jobman_add_app_field_shortcodes( $array ) {
 }
 
 global $jobman_shortcode_row_number, $jobman_shortcode_field_id, $jobman_shortcode_field;
-							
+
 function jobman_shortcode( $atts, $content, $tag ) {
 	global $jobman_shortcode_jobs, $jobman_shortcode_all_jobs, $jobman_shortcode_category, $jobman_shortcode_job, $jobman_shortcode_row_number, $jobman_shortcode_field_id, $jobman_shortcode_field, $wp_query;
 	$options = get_option( 'jobman_options' );
@@ -73,16 +73,16 @@ function jobman_shortcode( $atts, $content, $tag ) {
 		case 'job_loop':
 			if( NULL == $jobman_shortcode_jobs || ! count( $jobman_shortcode_jobs ) )
 				return do_shortcode( $content );
-			
+
 			$jobman_shortcode_row_number = 1;
 			foreach( $jobman_shortcode_jobs as $job ) {
 				$jobman_shortcode_job = $job;
 				$return .= do_shortcode( $content );
 				$jobman_shortcode_row_number++;
 			}
-			
+
 			$jobman_shortcode_job = NULL;
-			
+
 			return $return;
 		case 'job_row_number':
 			return $jobman_shortcode_row_number;
@@ -104,7 +104,7 @@ function jobman_shortcode( $atts, $content, $tag ) {
 			$icon = get_post_meta( $jobman_shortcode_job->ID , 'iconid', true );
 			if( ! $icon )
 				return NULL;
-			
+
 			$post = get_post( $icon );
 			$url = wp_get_attachment_url( $icon );
 			return "<img src='$url' title='$post->post_title' />";
@@ -112,41 +112,41 @@ function jobman_shortcode( $atts, $content, $tag ) {
 			$categories = wp_get_object_terms( $jobman_shortcode_job->ID, 'jobman_category' );
 			if( ! count( $categories ) )
 				return NULL;
-			
+
 			$cats = array();
 			foreach( $categories as $cat )
 				$cats[] = $cat->name;
-			
+
 			return implode( ', ', $cats );
 		case 'job_category_links':
 			$categories = wp_get_object_terms( $jobman_shortcode_job->ID, 'jobman_category' );
 			if( ! count( $categories ) )
 				return NULL;
-			
+
 			$cats = array();
 			foreach( $categories as $cat )
 				$cats[] = '<a href="'. get_term_link( $cat->slug, 'jobman_category' ) . '" title="' . sprintf( __( 'Jobs for %s', 'jobman' ), $cat->name ) . '">' . $cat->name . '</a>';;
-			
+
 			return implode( ', ', $cats );
 		case 'job_field_loop':
 			$fields = $options['job_fields'];
 			uasort( $fields, 'jobman_sort_fields' );
-			
+
 			foreach( $fields as $fid => $field ) {
 				$jobman_shortcode_field_id = $fid;
 				$jobman_shortcode_field = $field;
 				$return .= do_shortcode( $content );
 			}
-			
+
 			$jobman_shortcode_field_id = NULL;
 			$jobman_shortcode_field = NULL;
 			return $return;
 		case 'job_field':
 			$data = get_post_meta( $jobman_shortcode_job->ID, 'data' . $jobman_shortcode_field_id, true );
-			
+
 			if( empty( $data ) )
 				return NULL;
-			
+
 			switch( $jobman_shortcode_field['type'] ) {
 				case 'date':
 					if( ! empty( $options['date_format'] ) )
@@ -155,10 +155,10 @@ function jobman_shortcode( $atts, $content, $tag ) {
 						return $data;
 				case 'textarea':
 					$atts = shortcode_atts( array( 'length' => 0 ), $atts );
-					
+
 					if( $atts['length'] > 0 && $atts['length'] < strlen( $data ))
 						$data = substr( $data, 0, $atts['length'] ) . '... ' . do_shortcode( '[job_link]' . __( 'more', 'jobman' ) . '[/job_link]' );
-					
+
 					return wpautop( $data );
 				case 'file':
 					$atts = shortcode_atts( array( 'type' => 'link' ), $atts );
@@ -180,18 +180,18 @@ function jobman_shortcode( $atts, $content, $tag ) {
 			$data = get_posts( 'post_type=jobman_app_form&numberposts=-1' );
 			if( count( $data ) > 0 ) {
 				$applypage = $data[0];
-			
+
 				$url = get_page_link( $applypage->ID );
-				
+
 				$ref = '';
 				if( is_array( $atts ) && array_key_exists( 'ref', $atts ) )
 					$ref = " ref='{$atts['ref']}'";
-				
+
 				if( ! $jobman_shortcode_job )
 					return "<a href='$url'$ref>" . do_shortcode( $content ) . '</a>';
-				
+
 				$structure = get_option( 'permalink_structure' );
-				
+
 				if( '' == $structure ) {
 					$url .= '&amp;j=' . $jobman_shortcode_job->ID;
 				}
@@ -230,13 +230,13 @@ function jobman_shortcode( $atts, $content, $tag ) {
 				$url = get_term_link( $wp_query->query_vars['jcat'], 'jobman_category' );
 			else
 				$url = get_page_link( $options['main_page'] );
-			
+
 			// Previous page is first page, don't bother adding page info
 			if( $wp_query->query_vars['page'] == 2 )
 				return "<a href='$url'>". do_shortcode( $content ) . '</a>';
-				
+
 			$structure = get_option( 'permalink_structure' );
-			
+
 			if( empty( $structure ) ) {
 				$url .= '&amp;page=' . ( $wp_query->query_vars['page'] - 1 );
 			}
@@ -246,37 +246,37 @@ function jobman_shortcode( $atts, $content, $tag ) {
 				else
 					$url .= '/page/' . ( $wp_query->query_vars['page'] - 1 );
 			}
-			
+
 			return "<a href='$url'>". do_shortcode( $content ) . '</a>';
 		case 'job_page_next_number':
 			if( array_key_exists( 'page', $wp_query->query_vars ) && $wp_query->query_vars['page'] > 1 )
 				$page = $wp_query->query_vars['page'];
 			else
 				$page = 1;
-				
+
 			if( $page * $options['jobs_per_page'] >= count( $jobman_shortcode_all_jobs ) )
 				return NULL;
-				
+
 			return $page + 1;
 		case 'job_page_next_link':
 			if( array_key_exists( 'page', $wp_query->query_vars ) && $wp_query->query_vars['page'] > 1 )
 				$page = $wp_query->query_vars['page'];
 			else
 				$page = 1;
-				
+
 			if( $page * $options['jobs_per_page'] >= count( $jobman_shortcode_all_jobs ) )
 				return NULL;
-				
+
 			if( array_key_exists( 'jcat', $wp_query->query_vars ) )
 				$url = get_term_link( $wp_query->query_vars['jcat'], 'jobman_category' );
 			else
 				$url = get_page_link( $options['main_page'] );
-				
+
 			if( is_a( $url, 'WP_Error' ) )
 				return NULL;
-			
+
 			$structure = get_option( 'permalink_structure' );
-			
+
 			if( empty( $structure ) ) {
 				$url .= '&amp;page=' . ( $page + 1 );
 			}
@@ -286,7 +286,7 @@ function jobman_shortcode( $atts, $content, $tag ) {
 				else
 					$url .= '/page/' . ( $page + 1 );
 			}
-			
+
 			return "<a href='$url'>". do_shortcode( $content ) . '</a>';
 		case 'job_page_minimum':
 			if( array_key_exists( 'page', $wp_query->query_vars ) && $wp_query->query_vars['page'] > 1 )
@@ -314,15 +314,15 @@ function jobman_shortcode( $atts, $content, $tag ) {
 		case 'current_category_name':
 			if( empty( $jobman_shortcode_category ) )
 				return NULL;
-				
+
 			return $jobman_shortcode_category->name;
 		case 'current_category_link':
 			if( empty( $jobman_shortcode_category ) )
 				return NULL;
-				
+
 		return '<a href="'. get_term_link( $jobman_shortcode_category->slug, 'jobman_category' ) . '">' . do_shortcode( $content ) . '</a>';
 	}
-	
+
 	return do_shortcode( $content );
 }
 
@@ -336,18 +336,18 @@ function jobman_shortcode_conditional( $atts, $content, $tag ) {
 function jobman_field_shortcode( $atts, $content, $tag ) {
 	global $jobman_shortcode_job;
 	$options = get_option( 'jobman_options' );
-	
+
 	$matches = array();
 	preg_match( '#^job_field(\d+)(_label)?#', $tag, $matches );
-	
+
 	if( array_key_exists( 2, $matches ) )
 		return $options['job_fields'][$matches[1]]['label'];
-	
+
 	$data = get_post_meta( $jobman_shortcode_job->ID, 'data' . $matches[1], true );
 
 	if( empty( $data ) )
 		return NULL;
-	
+
 	switch( $options['job_fields'][$matches[1]]['type'] ) {
 		case 'date':
 			if( ! empty( $options['date_format'] ) )
@@ -356,10 +356,10 @@ function jobman_field_shortcode( $atts, $content, $tag ) {
 				return $data;
 		case 'textarea':
 			$atts = shortcode_atts( array( 'length' => 0 ), $atts );
-			
+
 			if( $atts['length'] > 0 && $atts['length'] < strlen( $data ))
 				$data = substr( $data, 0, $atts['length'] ) . '... ' . do_shortcode( '[job_link]' . __( 'more', 'jobman' ) . '[/job_link]' );
-			
+
 			return wpautop( $data );
 		case 'file':
 			$atts = shortcode_atts( array( 'type' => 'link' ), $atts );
@@ -386,30 +386,30 @@ function jobman_field_shortcode_conditional( $atts, $content, $tag ) {
 
 function jobman_app_shortcode( $atts, $content, $tag ) {
 	global $jobman_shortcode_job, $jobman_shortcode_categories;
-	
+
 	$options = get_option( 'jobman_options' );
-	
+
 	switch( $tag ) {
 		case 'job_links':
 			$jobs = array();
 			if( NULL != $jobman_shortcode_job )
 				$jobs[] = $jobman_shortcode_job->ID;
-				
+
 			if( array_key_exists( 'jobman-joblist', $_REQUEST ) )
 				$jobs = array_merge( $jobs, $_REQUEST['jobman-joblist'] );
-				
+
 			if( empty( $jobs ) )
 				return NULL;
-				
+
 			$jobstr = array();
 			foreach( $jobs as $job ) {
 				$data = get_post( $job );
 				if( empty( $data ) )
 					continue;
-					
+
 				$jobstr[] = "<a href='" . get_page_link( $data->ID ) . "'>$data->post_title</a>";
 			}
-			
+
 			return implode( ', ', $jobstr );
 		case 'job_app_submit':
 			return '<input type="submit" name="submit"  class="button-primary" value="' . do_shortcode( $content ) . '" />';
@@ -433,13 +433,13 @@ function jobman_app_shortcode( $atts, $content, $tag ) {
 function jobman_app_field_shortcode( $atts, $content, $tag ) {
 	global $jobman_shortcode_app_field, $current_user;
 	$options = get_option( 'jobman_options' );
-	
+
 	$matches = array();
 	preg_match( '#^job_app_field(\d+)(_label)?#', $tag, $matches );
-	
+
 	if( array_key_exists( 2, $matches ) )
 		return $options['fields'][$matches[1]]['label'];
-	
+
 	preg_match( '#^job_app_field(\d+)(_mandatory)?#', $tag, $matches );
 	if( array_key_exists( 2, $matches ) )
 		if( $options['fields'][$matches[1]]['mandatory'] )
@@ -459,7 +459,7 @@ function jobman_app_field_shortcode( $atts, $content, $tag ) {
 	if( $id == $options['application_email_from'] && '' == $data && is_user_logged_in() ) {
 		$data = $current_user->user_email;
 	}
-	
+
 	return jobman_app_field_input_html( $id, $field, $data );
 }
 

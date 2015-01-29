@@ -2,7 +2,7 @@
 
 function jobman_activate() {
 	global $wpdb;
- 
+
 	if( function_exists( 'is_multisite' ) && is_multisite() ) {
 		// check if it is a network activation - if so, run the activation function for each blog id
 		if ( isset( $_GET['networkwide'] ) && ( 1 == $_GET['networkwide'] ) ) {
@@ -15,14 +15,14 @@ function jobman_activate() {
 			}
 			switch_to_blog( $old_blog );
 			return;
-		}	
-	} 
-	_jobman_activate();		
+		}
+	}
+	_jobman_activate();
 }
 
 function jobman_new_blog( $blog_id, $user_id, $domain, $path, $site_id, $meta ) {
 	global $wpdb;
- 
+
 	if ( is_plugin_active_for_network( JOBMAN_BASENAME ) ) {
 		$old_blog = $wpdb->blogid;
 		switch_to_blog( $blog_id );
@@ -45,7 +45,7 @@ function _jobman_activate() {
 
 	jobman_page_taxonomy_setup();
 	jobman_load_translation_file();
-	
+
 	if( '' == $dbversion ) {
 		// Never been run, create the database.
 		jobman_create_default_settings();
@@ -93,10 +93,10 @@ function jobman_create_default_settings() {
 					'rewrite_rules' => array(),
 					'sort_by' => '',
 					'sort_order' => '',
-					'templates' => array( 
+					'templates' => array(
 									'application_form' => ''
 								),
-					'text' => array( 
+					'text' => array(
 								'main_before' => '',
 								'main_after' => '',
 								'category_before' => '',
@@ -123,11 +123,11 @@ function jobman_create_default_settings() {
 	$titletext = __( 'Title', 'jobman' );
 	$cattext = __( 'Categories', 'jobman' );
 	$applynowtext = __( 'Apply Now', 'jobman' );
-	
+
 	$navprevious = sprintf( __( 'Page %1s', 'jobman' ), '[job_page_previous_number]' );
 	$navnext = sprintf( __( 'Page %1s', 'jobman' ), '[job_page_next_number]' );
 	$navdesc = sprintf( __( 'Jobs %1s-%2s of %3s', 'jobman' ), '[job_page_minimum]', '[job_page_maximum]', '[job_total]' );
-	
+
 	$options['templates']['job'] = <<<EOT
 <table class="job-table[if_job_highlighted] highlighted[/if_job_highlighted]">
   <tr>
@@ -152,7 +152,7 @@ function jobman_create_default_settings() {
     <td></td>
     <td class="jobs-applynow">[job_apply_link]{$applynowtext}[/job_apply_link]</td>
   </tr>
-</table>	
+</table>
 EOT;
 		$options['templates']['job_list'] = <<<EOT
 [job_loop]
@@ -219,9 +219,9 @@ function jobman_upgrade_settings( $oldversion ) {
 										'gxs' => get_option( 'jobman_plugin_gxs' )
 									)
 					);
-		
+
 		update_option( 'jobman_options', $options );
-		
+
 		// Delete the old options
 		delete_option( 'jobman_version' );
 		delete_option( 'jobman_db_version' );
@@ -237,38 +237,38 @@ function jobman_upgrade_settings( $oldversion ) {
 
 	if( $oldversion < 7 ) {
 		$options = get_option( 'jobman_options' );
-		
+
 		$options['user_registration'] = 0;
 		$options['user_registration_required'] = 0;
 		$options['loginform_main'] = 1;
 		$options['loginform_category'] = 1;
 		$options['loginform_job'] = 1;
 		$options['loginform_apply'] = 1;
-		
+
 		update_option( 'jobman_options', $options );
 	}
-	
+
 	if( $oldversion < 9 ) {
 		mkdir( JOBMAN_UPLOAD_DIR . '/uploads', 0777, true );
 		mkdir( JOBMAN_UPLOAD_DIR . '/icons', 0777, true );
 	}
-	
+
 	if( $oldversion < 11 ) {
 		$options = get_option( 'jobman_options' );
-		
+
 		$options['related_categories'] = 1;
 		$options['sort_by'] = '';
 		$options['sort_order'] = '';
 		$options['highlighted_behaviour'] = 'sticky';
-		
+
 		$options['uninstall'] = array(
 									'options' => 1,
 									'jobs' => 1,
 									'applications' => 1,
 									'categories' => 1
 								);
-		
-		$options['text'] = array( 
+
+		$options['text'] = array(
 								'main_before' => '',
 								'main_after' => '',
 								'category_before' => '',
@@ -280,10 +280,10 @@ function jobman_upgrade_settings( $oldversion ) {
 								'job_title_prefix' => __( 'Job', 'jobman' ) . ': ',
 								'application_acceptance' => __( 'Thank you for your application! We\'ll check it out, and get back to you soon!', 'jobman' )
 							);
-							
+
 		$options['application_email_from_fields'] = array();
 		$options['plugins']['sicaptcha'] = 0;
-		
+
 		$options['templates'] = array();
 		$options['templates']['job'] = <<<EOT
 <table class="job-table[if_job_highlighted] highlighted[/if_job_highlighted]">
@@ -309,7 +309,7 @@ function jobman_upgrade_settings( $oldversion ) {
     <td></td>
     <td class="jobs-applynow">[job_apply_link]Apply Now[/job_apply_link]</td>
   </tr>
-</table>	
+</table>
 EOT;
 		if( 'summary' == $options['list_type'] ) {
 			$options['templates']['job_list'] = <<<EOT
@@ -366,13 +366,13 @@ EOT;
 [/job_loop]
 EOT;
 		}
-		
+
 		update_option( 'jobman_options', $options );
 	}
 
 	if( $oldversion < 16 ) {
 		$options = get_option( 'jobman_options' );
-		
+
 		$options['templates']['application_form'] = '';
 		$options['multi_applications'] = 0;
 		$options['api_keys'] = array(
@@ -387,7 +387,7 @@ EOT;
 		$navprevious = sprintf( __( 'Page %1s', 'jobman' ), '[job_page_previous_number]' );
 		$navnext = sprintf( __( 'Page %1s', 'jobman' ), '[job_page_next_number]' );
 		$navdesc = sprintf( __( 'Jobs %1s-%2s of %3s', 'jobman' ), '[job_page_minimum]', '[job_page_maximum]', '[job_total]' );
-		
+
 		$options['templates']['job_list'] .= <<<EOT
 
 [if_job_page_count]
@@ -398,7 +398,7 @@ EOT;
 </div>
 [/if_job_page_count]
 EOT;
-		
+
 		update_option( 'jobman_options', $options );
 	}
 
@@ -407,12 +407,12 @@ EOT;
 
 		if( ! array_key_exists( 'jobs_per_page', $options ) )
 			$options['jobs_per_page'] = 0;
-		
+
 		update_option( 'jobman_options', $options );
 	}
 
-	if( $oldversion < 19 ) {
-		$options = get_option( 'jobman_options' );
+    if( $oldversion < 19 ) {
+        $options = get_option( 'jobman_options' );
 
 		if( ! array_key_exists( 'rewrite_rules', $options ) )
 			$options['rewrite_rules'] = array();
@@ -423,7 +423,7 @@ EOT;
 
 function jobman_delete_blog( $blog_id ) {
 	global $wpdb;
- 
+
 	if ( is_plugin_active_for_network( JOBMAN_BASENAME ) ) {
 		$old_blog = $wpdb->blogid;
 		switch_to_blog( $blog_id );
@@ -434,7 +434,7 @@ function jobman_delete_blog( $blog_id ) {
 
 function jobman_uninstall() {
 	global $wpdb;
- 
+
 	if( function_exists( 'is_multisite' ) && is_multisite() ) {
 		// check if it is a network activation - if so, run the activation function for each blog id
 		if ( isset( $_GET['networkwide'] ) && ( 1 == $_GET['networkwide'] ) ) {
@@ -447,14 +447,14 @@ function jobman_uninstall() {
 			}
 			switch_to_blog( $old_blog );
 			return;
-		}	
-	} 
-	_jobman_uninstall();		
+		}
+	}
+	_jobman_uninstall();
 }
 
 function _jobman_uninstall() {
 	jobman_drop_db();
-	
+
 	$options = get_option( 'jobman_options' );
 
 	if( $options['uninstall']['options'] ) {
@@ -465,7 +465,7 @@ function _jobman_uninstall() {
 				wp_delete_attachment( $upload->ID );
 			}
 		}
-		
+
 		delete_option( 'jobman_options' );
 	}
 }

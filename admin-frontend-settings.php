@@ -33,15 +33,15 @@ function jobman_display_conf() {
 <?php
 	jobman_print_settings_tabs();
 	
-	if( ! get_option( 'pento_consulting' ) ) {
+	if( ! get_option( 'smb_consulting' ) ) {
 		$widths = array( '78%', '20%' );
 		$functions = array(
 						array( 'jobman_print_display_settings_box', 'jobman_print_sort_box', 'jobman_print_template_box', 'jobman_print_app_settings_box', 'jobman_print_app_template_box', 'jobman_print_misc_text_box', 'jobman_print_wrap_text_box' ),
-						array( /*'jobman_print_other_projects_box',*/ 'jobman_print_donate_box', 'jobman_print_about_box' )
+						array( 'jobman_print_survey_box','jobman_print_donate_box', 'jobman_print_about_box' )
 					);
 		$titles = array(
 					array( __( 'Display Settings', 'jobman' ), __( 'Job List Sorting', 'jobman' ), __( 'Job Templates', 'jobman' ), __( 'Application Form Settings', 'jobman' ), __( 'Application Form Template', 'jobman' ), __( 'Miscellaneous Text', 'jobman' ), __( 'Page Text', 'jobman' ) ),
-					array( /*__( 'My Other Projects', 'jobman' ),*/ __( 'Donate', 'jobman' ), __( 'About This Plugin', 'jobman' ))
+					array( __( 'Job Manager - SURVEY -', 'jobman' ), __( 'Donate', 'jobman' ), __( 'About This Plugin', 'jobman' ))
 				);
 	}
 	else {
@@ -82,12 +82,12 @@ function jobman_print_display_settings_box() {
 				<td><span class="description"><?php printf( __( "The format to use for Job date fields. Leave blank to use the dates as they're entered. See the <a href='%1s'>documentation on date formatting</a> for further details.", 'jobman' ), 'http://codex.wordpress.org/Formatting_Date_and_Time' ) ?></span></td>
 			</tr>
 <?php
-	if( ! get_option( 'pento_consulting' ) ) {
+	if( ! get_option( 'smb_consulting' ) ) {
 ?>
 			<tr>
 				<th scope="row"><?php _e( 'Hide "Powered By" link?', 'jobman' ) ?></th>
 				<td><input type="checkbox" value="1" name="promo-link" <?php echo ( $options['promo_link'] )?( 'checked="checked" ' ):( '' ) ?>/></td>
-				<td><span class="description"><?php _e( "If you're unable to donate, I would appreciate it if you left this unchecked.", 'jobman' ) ?></span></td>
+				<td><span class="description"><?php _e( "If you're unable to donate, we would appreciate it if you left this unchecked.", 'jobman' ) ?></span></td>
 			</tr>
 <?php
 	}
