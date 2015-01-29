@@ -1,8 +1,8 @@
-<?php 
+<?php
 function jobman_list_jobs() {
 	$options = get_option( 'jobman_options' );
 	$fields = $options['job_fields'];
-	
+
 	$displayed = 1;
 	if( array_key_exists( 'jobman-mass-edit-jobs', $_REQUEST ) ) {
 		if( 'delete' == $_REQUEST['jobman-mass-edit-jobs'] ) {
@@ -30,8 +30,8 @@ function jobman_list_jobs() {
 		if( 1 == $displayed )
 			return;
 	}
-	
-	
+
+
 ?>
 	<div class="wrap">
 		<h2><?php _e( 'Job Manager: Jobs List', 'jobman' ) ?></h2>
@@ -54,12 +54,12 @@ function jobman_list_jobs() {
 			echo '<div class="error">' . __( 'You do not have permission to edit that Job', 'jobman' ) . '</div>';
 			break;
 	}
-	
+
 	$jobs = get_posts( 'post_type=jobman_job&numberposts=-1&post_status=publish,draft,future' );
 ?>
 		<form action="" method="post">
-<?php 
-	wp_nonce_field( 'jobman-mass-edit-jobs' ); 
+<?php
+	wp_nonce_field( 'jobman-mass-edit-jobs' );
 ?>
 		<table id="jobman-jobs-list" class="widefat page fixed" cellspacing="0">
 			<thead>
@@ -122,13 +122,13 @@ function jobman_list_jobs() {
 
 function jobman_list_jobs_data( $jobs, $showexpired = false ) {
 		global $current_user;
-		
+
 		if( ! is_array( $jobs ) || count( $jobs ) <= 0 )
 			return;
-			
+
 		$options = get_option( 'jobman_options' );
 		$fields = $options['job_fields'];
-		
+
 		wp_get_current_user();
 
 		$expiredjobs = array();
@@ -141,28 +141,28 @@ function jobman_list_jobs_data( $jobs, $showexpired = false ) {
 				}
 			}
 			$catstring = implode( ', ', $cats_arr );
-			
+
 			$displayenddate = get_post_meta( $job->ID, 'displayenddate', true );
-			
+
 			$display = false;
 			if( ( '' == $displayenddate || strtotime( $displayenddate ) > time() ) && 'publish' == $job->post_status )
 				$display = true;
-				
+
 			if( ! ( $display || $showexpired ) ) {
 				$expiredjobs[] = $job;
 				continue;
 			}
-			
+
 			$future = false;
 			if( strtotime( $job->post_date ) > time() )
 				$future = true;
-			
+
 			$children = get_posts( "post_type=jobman_app&meta_key=job&meta_value=$job->ID&post_status=publish,private&numberposts=-1" );
 			if( count( $children ) > 0 )
 				$applications = '<a href="' . admin_url( "admin.php?page=jobman-list-applications&amp;jobman-jobid=$job->ID" ) . '">' . count( $children ) . '</a>';
 			else
 				$applications = 0;
-				
+
 			$class = "live";
 			if( $future )
 				$class = "future";
@@ -184,7 +184,7 @@ function jobman_list_jobs_data( $jobs, $showexpired = false ) {
 <?php
 			if( current_user_can( 'edit_others_posts' ) || $job->post_author == $current_user->ID ) {
 ?>
-				<a href="?page=jobman-list-jobs&amp;jobman-jobid=<?php echo $job->ID ?>"><?php _e( 'Edit', 'jobman' ) ?></a> | 
+				<a href="?page=jobman-list-jobs&amp;jobman-jobid=<?php echo $job->ID ?>"><?php _e( 'Edit', 'jobman' ) ?></a> |
 <?php
 			}
 ?>
@@ -244,12 +244,12 @@ function jobman_add_job() {
 function jobman_edit_job( $jobid ) {
 	global $wp_version;
 	$options = get_option( 'jobman_options' );
-	
+
 	if( array_key_exists( 'jobmansubmit', $_REQUEST ) ) {
 		// Job form has been submitted. Update the database.
 		check_admin_referer( "jobman-edit-job-$jobid" );
 		$error = jobman_updatedb();
-		
+
 		if( $error )
 			return $error;
 		else if ( 'new' == $jobid )
@@ -257,7 +257,7 @@ function jobman_edit_job( $jobid ) {
 		else
 			return 3;
 	}
-	
+
 	if( 'new' == $jobid ) {
 		$title = __( 'Job Manager: New Job', 'jobman' );
 		$submit = __( 'Create Job', 'jobman' );
@@ -267,15 +267,15 @@ function jobman_edit_job( $jobid ) {
 	else {
 		$title = __( 'Job Manager: Edit Job', 'jobman' );
 		$submit = __( 'Update Job', 'jobman' );
-		
+
 		$job = get_post( $jobid );
 		if( NULL == $job )
 			// No job associated with that id.
 			return 0;
-		
+
 		$display_jobid = $jobid;
 	}
-	
+
 	if( isset( $job->ID ) ) {
 		$jobid = $job->ID;
 		$jobmeta = get_post_custom( $job->ID );
@@ -285,9 +285,9 @@ function jobman_edit_job( $jobid ) {
 		$jobmeta = array();
 		$jobcats = array();
 	}
-	
+
 	$icons = $options['icons'];
-	
+
 	$jobdata = array();
 	foreach( $jobmeta as $key => $value ) {
 		if( is_array( $value ) )
@@ -295,7 +295,7 @@ function jobman_edit_job( $jobid ) {
 		else
 			$jobdata[$key] = $value;
 	}
-	
+
 	if( user_can_richedit() && version_compare( $wp_version, '3.3-aortic-dissection', '<' ) ) {
 			wp_tiny_mce( false, array( 'editor_selector' => 'jobman-editor' ) );
 	}
@@ -303,8 +303,8 @@ function jobman_edit_job( $jobid ) {
 	<form action="<?php echo admin_url('admin.php?page=jobman-list-jobs') ?>" enctype="multipart/form-data" method="post">
 	<input type="hidden" name="jobmansubmit" value="1" />
 	<input type="hidden" name="jobman-jobid" value="<?php echo $jobid ?>" />
-<?php 
-	wp_nonce_field( "jobman-edit-job-$jobid"); 
+<?php
+	wp_nonce_field( "jobman-edit-job-$jobid");
 ?>
 	<div class="wrap">
 		<h2><?php echo $title ?></h2>
@@ -349,7 +349,7 @@ function jobman_edit_job( $jobid ) {
 				$checked = ' checked="checked"';
 			else
 				$checked = '';
-				
+
 			$post = get_post( $icon );
 ?>
 					<input type="radio" name="jobman-icon" value="<?php echo $icon ?>"<?php echo $checked ?> /> <img src="<?php echo wp_get_attachment_url( $icon ) ?>" /> <?php echo $post->post_title ?><br/>
@@ -386,17 +386,17 @@ function jobman_edit_job( $jobid ) {
 
 			if( 'heading' != $field['type'] )
 				echo '<tr>';
-				
+
 			if( ! array_key_exists( 'description', $field ) )
 				$field['description'] = '';
-			
+
 			switch( $field['type'] ) {
 				case 'text':
 					if( '' != $field['label'] )
 						echo "<th scope='row'>{$field['label']}</th>";
 					else
 						echo '<td class="th"></td>';
-					
+
 					echo "<td><input type='text' name='jobman-field-$id' value='$data' /></td>";
 					echo "<td><span class='description'>{$field['description']}</span></td></tr>";
 					break;
@@ -405,10 +405,10 @@ function jobman_edit_job( $jobid ) {
 						echo "<th scope='row'>{$field['label']}</th><td>";
 					else
 						echo '<td class="th"></td><td>';
-					
-					$values = split( "\n", strip_tags( $field['data'] ) );
-					$display_values = split( "\n", $field['data'] );
-					
+
+					$values = explode( "\n", strip_tags( $field['data'] ) );
+					$display_values = explode( "\n", $field['data'] );
+
 					foreach( $values as $key => $value ) {
 						$checked = '';
 						if( $value == $data )
@@ -424,14 +424,14 @@ function jobman_edit_job( $jobid ) {
 					else
 						echo '<td class="th"></td><td>';
 
-					$values = split( "\n", strip_tags( $field['data'] ) );
-					$display_values = split( "\n", $field['data'] );
-					
+					$values = explode( "\n", strip_tags( $field['data'] ) );
+					$display_values = explode( "\n", $field['data'] );
+
 					if( 'new' == $jobid )
 						$data = array();
 					else
-						$data = split( "\n", strip_tags( $data ) );
-					
+						$data = explode( "\n", strip_tags( $data ) );
+
 					foreach( $values as $key => $value ) {
 						$value = trim( $value );
 						$checked = '';
@@ -512,7 +512,7 @@ function jobman_edit_job( $jobid ) {
 					echo '<td colspan="3">&nbsp;</td></tr>';
 					break;
 			}
-			
+
 			$previd = "jobman-field-$id";
 		}
 	}
@@ -553,9 +553,9 @@ function jobman_edit_job( $jobid ) {
 function jobman_updatedb() {
 	global $wpdb, $current_user;
 	$options = get_option( 'jobman_options' );
-	
+
 	wp_get_current_user();
-	
+
 	if( array_key_exists( 'jobman-displaystartdate', $_REQUEST ) && ! empty( $_REQUEST['jobman-displaystartdate'] ) )
 		$displaystartdate = date( 'Y-m-d H:i:s', strtotime( stripslashes( $_REQUEST['jobman-displaystartdate'] ) ) );
 	else
@@ -572,19 +572,19 @@ function jobman_updatedb() {
 				'post_date' => $displaystartdate,
 				'post_date_gmt' => $displaystartdate,
 				'post_parent' => $options['main_page']);
-	
+
 	if( 'new' == $_REQUEST['jobman-jobid'] ) {
 		$id = wp_insert_post( $page );
-		
+
 		$fields = $options['job_fields'];
 		if( count( $fields ) > 0 ) {
 			foreach( $fields as $fid => $field ) {
 				if($field['type'] != 'file' && ( ! array_key_exists( "jobman-field-$fid", $_REQUEST ) || '' == $_REQUEST["jobman-field-$fid"] ) )
 					continue;
-				
+
 				if( 'file' == $field['type'] && ! array_key_exists( "jobman-field-$fid", $_FILES ) )
 					continue;
-				
+
 				$data = '';
 				switch( $field['type'] ) {
 					case 'file':
@@ -610,7 +610,7 @@ function jobman_updatedb() {
 					default:
 						$data = $_REQUEST["jobman-field-$fid"];
 				}
-				
+
 				add_post_meta( $id, "data$fid", $data, true );
 			}
 		}
@@ -618,7 +618,7 @@ function jobman_updatedb() {
 		add_post_meta( $id, 'displayenddate', stripslashes( $_REQUEST['jobman-displayenddate'] ), true );
 		add_post_meta( $id, 'iconid', $_REQUEST['jobman-icon'], true );
 		add_post_meta( $id, 'email', $_REQUEST['jobman-email'], true );
-		
+
 		if( array_key_exists( 'jobman-highlighted', $_REQUEST ) && $_REQUEST['jobman-highlighted'] )
 			add_post_meta( $id, 'highlighted', 1, true );
 		else
@@ -626,19 +626,19 @@ function jobman_updatedb() {
 	}
 	else {
 		$data = get_post( $_REQUEST['jobman-jobid'] );
-		
+
 		if( ! current_user_can( 'edit_others_posts' ) && $data->post_author != $current_user->ID )
 			return 4;
 
 		$page['ID'] = $_REQUEST['jobman-jobid'];
 		$id = wp_update_post( $page );
-		
+
 		$fields = $options['job_fields'];
 		if( count( $fields ) > 0 ) {
 			foreach( $fields as $fid => $field ) {
 				if( 'file' == $field['type'] && ! array_key_exists( "jobman-field-$fid", $_FILES ) && ! array_key_exists( "jobman-field-delete-$fid", $_REQUEST ) )
 					continue;
-				
+
 				$data = '';
 				switch( $field['type'] ) {
 					case 'file':
@@ -678,16 +678,16 @@ function jobman_updatedb() {
 						if( array_key_exists( "jobman-field-$fid", $_REQUEST ) )
 							$data = $_REQUEST["jobman-field-$fid"];
 				}
-				
+
 				update_post_meta( $id, "data$fid", $data );
 			}
 		}
 
-		
+
 		update_post_meta( $id, 'displayenddate', stripslashes( $_REQUEST['jobman-displayenddate'] ) );
 		update_post_meta( $id, 'iconid', $_REQUEST['jobman-icon'] );
 		update_post_meta( $id, 'email', $_REQUEST['jobman-email'] );
-		
+
 		if( array_key_exists( 'jobman-highlighted', $_REQUEST ) && $_REQUEST['jobman-highlighted'] )
 			update_post_meta( $id, 'highlighted', 1 );
 		else
@@ -699,7 +699,7 @@ function jobman_updatedb() {
 
 	if( $options['plugins']['gxs'] )
 		do_action( 'sm_rebuild' );
-		
+
 	return 0;
 }
 
@@ -723,16 +723,16 @@ function jobman_job_delete_confirm() {
 
 function jobman_job_delete() {
 	$options = get_option( 'jobman_options' );
-	
+
 	$jobs = explode( ',', $_REQUEST['jobman-job-ids'] );
-	
+
 	// Get the file fields
 	$file_fields = array();
 	foreach( $options['job_fields'] as $id => $field ) {
 		if( 'file' == $field['type'] )
 			$file_fields[] = $id;
 	}
-	
+
 	foreach( $jobs as $job ) {
 		// Remove reference from applications
 		$apps = get_posts( 'post_type=jobman_app&numberposts=-1&meta_key=job&meta_value=' . $job );
@@ -765,10 +765,10 @@ function jobman_job_delete() {
 
 function jobman_job_archive() {
 	$jobs = $_REQUEST['job'];
-	
+
 	if( ! is_array( $jobs ) )
 		return;
-	
+
 	$data = array( 'post_status' => 'draft' );
 	foreach( $jobs as $job ) {
 		$data['ID'] = $job;
@@ -778,17 +778,17 @@ function jobman_job_archive() {
 
 function jobman_job_unarchive() {
 	$jobs = $_REQUEST['job'];
-	
+
 	if( ! is_array( $jobs ) )
 		return;
-	
+
 	$data = array( 'post_status' => 'publish' );
 	foreach( $jobs as $job ) {
 		$data['ID'] = $job;
 		$data['post_date'] = date( 'Y-m-d H:i:s', strtotime( '-1 day' ) );
 		$data['post_date_gmt'] = date( 'Y-m-d H:i:s', strtotime( '-1 day' ) );
 		wp_update_post( $data );
-		
+
 		update_post_meta( $job, 'displayenddate', '' );
 	}
 }

@@ -7,7 +7,7 @@ register_activation_hook( JOBMAN_FOLDER . '/job-manager.php', 'jobman_activate' 
 add_filter( 'upgrader_post_install', 'jobman_activate' );
 
 // New blog!
-add_action( 'wpmu_new_blog', 'jobman_new_blog', 10, 6); 
+add_action( 'wpmu_new_blog', 'jobman_new_blog', 10, 6);
 
 // Translation hook
 add_action( 'init', 'jobman_load_translation_file' );
@@ -41,7 +41,7 @@ add_action( 'init', 'jobman_page_taxonomy_setup' );
 add_action( 'do_feed_jobman', 'jobman_rss_feed', 1, 1 );
 
 
-// 
+//
 // Widgets
 //
 add_action( 'widgets_init', create_function( '', 'return register_widget("JobmanLatestJobsWidget");' ) );

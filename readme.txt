@@ -1,12 +1,19 @@
 === Job Manager ===
-Contributors: pento
-Donate link: http://pento.net/donate/
-Tags: jobs, job, manager, list, listing, employer, application, board
+Contributors: Townsend, Wild
+Donate link: http://www.wp-jobmanager.com/donate/
+Plugin URI: http://www.wp-jobmanager.com
+License: GPLv3
+License URI: http://www.gnu.org/licenses/gpl.html
+Tags: jobs, job, manager, list, listing, job listing, job board, board, employer, application, company, hiring, employment, employees, candidate, applicant tracking , talent, recruiting, recruitment  
 Requires at least: 2.9
-Tested up to: 3.3
+Tested up to: 4.1
 Stable tag: trunk
 
 A job listing and job application management plugin for WordPress.
+
+> <strong>More information on this version of Job Manager</strong><br>
+> [ Read Me - Job Manager 7.21 update details](http://www.wp-jobmanager.com/documentation-jm/job-manager-7-21-update/)
+
 
 == Description ==
 
@@ -25,7 +32,7 @@ A plugin for managing job lists and job applications on your WordPress site. It 
 	*    Jobs can be easily archived or made public as needed
 *    *Applications*
     *    Applicants can apply through the website, using a form that you can customize and template, so you get the information you need
-    *    Advanced filtering on application forms, to ensure you only get applications that match your criteria: [Documentation](http://code.google.com/p/wordpress-job-manager/wiki/CustomApplicationForm)
+    *    Advanced filtering on application forms, to ensure you only get applications that match your criteria: [Documentation](http://www.wp-jobmanager.com/documentation-jm/custom-application-form/)
     *    Upon successful application, you can be emailed the details, so you're always up to date with new applicants
 *    *Applicant Management*
     *    Simple interface for viewing all applicants
@@ -34,44 +41,78 @@ A plugin for managing job lists and job applications on your WordPress site. It 
 	*    Interview scheduling, linked directly to jobs and applications
 	*    Internal comments, for easy reference when you need to decide
 
-Related links:
 
-* [Plugin Homepage](http://pento.net/projects/wordpress-job-manager-plugin/)
+> <strong>Support</strong><br>
+> 
+> Limited support for the Job Manager plugin is provided on the WordPress forums. Please note: that it is free support, hence it is not always possible to answer all questions on a timely manner, although we do try.
+> Personalized premium support may be available via email in the near future.
+
+
+= Links =
+
+* [Plugin Homepage](http://www.wp-jobmanager.com/)
 * [Support Forum](http://wordpress.org/tags/job-manager?forum_id=10)
-* [Report Bugs and Request Features](http://code.google.com/p/wordpress-job-manager/issues/list)
-* [Development Roadmap](http://code.google.com/p/wordpress-job-manager/wiki/Roadmap)
+* [Report Bugs and Request Enhancments](https://bitbucket.org/jobmanager_hp/job-manager/issues)
+* [Knowledge Base - Documentation](http://www.wp-jobmanager/documentation)
+
+
+= Get involved =
+
+* Developers can contribute to the source code on our [BitbUcket repository](https://bitbucket.org/jobmanager_hp/job-manager).
+* Translators can contribute through [Transifex](https://www.transifex.com/projects/p/job-manager-hp/).
+* Users can contribute by leaving a 5 stars [review](https://wordpress.org/support/view/plugin-reviews/job-manager#postform) or making a [donation](http://www.wp-jobmanager.com/donate/).
+
 
 == Installation ==
 
 Job Manager Requires:
 
 * WordPress 2.9 or later
+* Preferably WordPress 4.1
 * PHP 5 or later
 
-= The Good Way =
+There are 3 ways to install this plugin:
 
-1. In your WordPress Admin, go to the Add New Plugins page
-1. Search for: job manager
-1. Job Manager should be the first result. Click the Install link.
+= 1. The super easy way =
+1. In your Admin, go to menu Plugins > Add New
+1. Search for: `job manager`
+1. Job Manager should be the first result
+1. Click the Install link
+1. Activate the plugin
+1. A new menu `Job Manager` will appear in your Admin
 
-= The Old Way =
+= 2. The easy way =
+1. Download the plugin (.zip file) on the right column of this page
+1. In your Admin, go to menu Plugins > Add New
+1. Select the tab "Upload Plugin"
+1. Upload the .zip file you just downloaded
+1. Activate the plugin
+1. A new menu `Job Manager` will appear in your Admin
 
-If you use this method, please remember to Deactivate/Activate Job Manager between upgrades, to ensure that the upgrade routines are run properly.
-
-1. Upload the plugin to the `/wp-content/plugins/` directory
+= 3. The old and reliable way (FTP) =
+1. Upload `job-manager` folder to the `/wp-content/plugins/` directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
+1. A new menu `Job Manager` will appear in your Admin
 
-= The Living-On-The-Edge Way =
-(Please don't do this in production, you will almost certainly break something!)
 
 1. Checkout the current development version from http://wordpress-job-manager.googlecode.com/svn/trunk/
-1. Subscribe to the [update feed](http://code.google.com/p/wordpress-job-manager/source/list) to be notified of changes
+1. Subscribe to the [update feed](https://bitbucket.org/jobmanager_hp) to be notified of changes
+
+
+
+== Screenshots ==
+
+1. Job Listing Details (admin)
+2. Job LIsting (post)
+3. Job Application - Resume (CVS Submit/Apply)
+4. Custom Completion (submitted message) 
+
 
 == Frequently Asked Questions ==
 
 = How do I setup a custom application form? =
 
-For a full description of how to use the application form customization features, please read [this page in the documentation](http://code.google.com/p/wordpress-job-manager/wiki/CustomApplicationForm).
+For a full description of how to use the application form customization features, please review the Knowledge base documentation (http://www.wp-jobmanager.com/documentation).
 
 = DOCX files don't download properly =
 
@@ -83,7 +124,8 @@ In your WordPress MultiSite admin, go to Site Admin->Options. Update the "Upload
 
 == Other Plugin Support ==
 
-Job Manager supports added functionality when other plugins are installed. If you think your plugin could add some functionality to Job Manager, please [submit a feature request](http://code.google.com/p/wordpress-job-manager/issues/list).
+Job Manager supports added functionality when other plugins are installed. If you think your plugin could add some functionality to Job Manager, please [submit an enhancment request](https://bitbucket.org/jobmanager_hp/wordpress-job-manager/issues/new).
+Select (KIND) as Enhancment
 
 = Google XML Sitemaps =
 
@@ -93,11 +135,26 @@ Job Manager will add all of your job lists and job detail pages to your sitemap,
 
 If you want a [CAPTCHA](http://en.wikipedia.org/wiki/CAPTCHA) on your Application Form, install the [SI CAPTCHA](http://wordpress.org/extend/plugins/si-captcha-for-wordpress/) plugin.
 
+= Additional Plugin Recommendations =
+
+[Other Plugins we recommend for use with Job Manager] (http://www.jobmanager.com/recommended-plugins).
+
 == Credits ==
 
 = Translations =
 
-Notice the version number in brackets. This is the version series that the translation is up-to-date with. If that version series is lower than the current release, you can still use the translation, there just may be some strings that still show in English. If you'd like to add your own language, or help keep an existing language up-to-date, please [contact me](http://pento.net/contact/)!
+If you would like to do a translation for the plugin, you can do so via Transifex.  
+[Transifex](https://www.transifex.com/projects/p/job-manager-hp/)
+
+Simply select or add a language you want to translate in and I will attach the language in the next version release. You will need an account on Transifex to do this.
+
+If you have done a translation via JobManager, then you are welcome to send that also. To send your translation files contact me. (http://www.wp-jobmanager.com/contact-us/) Select Translations via options.
+
+I'll acknowledge your contribution here with either your full name or username given.
+
+
+NOTE:The information below has been maintained for continuity purposes and applies to the plugin up to release 7.20 
+Notice the version number in brackets. This is the version series that the translation is up-to-date with. If that version series is lower than the current release, you can still use the translation, there just may be some strings that still show in English. If you'd like to add your own language, or help keep an existing language up-to-date, please [contact us](http://www.wp-jobmanager.com/contact-us/)!
 
 * Arabic Translation (0.7.x), provided by [Ali Al-Ghalebi](http://www.ghalebi.info/)
 * Czech Translation (0.7.x), provided by [Lukas](mailto:prdlik@centrum.cz)
@@ -112,13 +169,22 @@ Notice the version number in brackets. This is the version series that the trans
 
 = Special Thanks =
 
-* [EuroPlacements](http://europlacements.it/), for their input and support of the initial development of Job Manager.
+* Matt Wild of [Gobble Logic] (http://gobblelogic.com/), for his insurmoutable help in keeping this project alive!
+* Amy Shanks of [Strategic Recruitment Solutions] (http://www.strategicrecruitmentsolutions.com/), for her encrouragement and continuing support to Job Manager.     
 * [Automattic](http://automattic.com/), for their support and feedback on features, design and usability.
-* All the wonderful people who've submitted bugs, feedback and feature requests - you're the people who keep me with things to work on!
+* All the wonderful people who've submitted bugs, feedback and feature requests - you're the people who keep us on our toes and help give this project life!
 
-Print Icon courtesy of [VisualPharm](http://www.visualpharm.com/), under a [CC BY-ND](http://creativecommons.org/licenses/by-nd/3.0/) license.
+Print Icon by [Piotr Kwiatkowski](http://www.piotrkwiatkowski.co.uk), under a [CC BY-ND](http://creativecommons.org/licenses/by-nd/3.0/) license.
 
 == Changelog ==
+
+= 0.7.21 =
+* CHANGED: Print Icon (Job Manager: Application Details)
+* FIXED: Pagination
+* FIXED: Download links (Job Manager:Applications)
+* FIXED: Datepicker deregister in admin area
+* FIXED: Newer PHP compatibility fixes
+* FIXED: Newer WP fixes
 
 = 0.7.20 =
 * FIXED: Compatibility with Yoast SEO plugin. Props to [Joost](http://yoast.com).
@@ -554,3 +620,6 @@ Print Icon courtesy of [VisualPharm](http://www.visualpharm.com/), under a [CC B
 * Initial release
 
 == Upgrade Notice ==
+
+= 7.21 =
+For additional details on this update:  (http://www.wp-jobmanager.com/documentation-jm/job-manager-7-21-update/)

@@ -3,7 +3,7 @@
 if( ! defined( 'JOBMAN_URL' ) )
 	define( 'JOBMAN_URL', '/wp-content/themes/vip/' . JOBMAN_VIP_SITE . '/plugins/job-manager' );
 
-	
+
 function jobman_change_loggedin_html( $html ) {
 	return NULL;
 }
@@ -11,20 +11,20 @@ function jobman_change_loggedin_html( $html ) {
 function jobman_change_login_html( $html ) {
 	if( 'automattic-2011' == JOBMAN_VIP_SITE )
 		$loginurl = 'http://automattic.wordpress.com/wp-login.php?redirect_to=';
-	
+
 	$registerurl = 'http://en.wordpress.com/signup/?redirect_to=';
-	
+
 	$data = get_posts( 'post_type=jobman_app_form&numberposts=1' );
 	if( count( $data ) > 0 ) {
 		$applypage = $data[0];
-	
+
 		$applypageurl = get_page_link( $applypage->ID );
 		$loginurl .= $applypageurl;
 		$registerurl .= $applypageurl;
 	}
-	
+
 	$html = "<p>Do you have a WordPress.com account? If so, please <a href='$loginurl'>login here</a>. If not, please <a href='$registerurl'>register one now</a>!</p>";
-	
+
 	return $html;
 }
 
@@ -52,11 +52,11 @@ function jobman_automattic_display_head() {
 
 	if( ! $jobman_displaying )
 		return;
-	
+
 	if( is_feed() )
 		return;
 ?>
-<script type="text/javascript"> 
+<script type="text/javascript">
 //<![CDATA[
 jQuery(document).ready(function() {
 	jQuery("#jobman-appform p.jobman-oss span").css( 'display', 'none' );
@@ -65,7 +65,7 @@ jQuery(document).ready(function() {
 	});
 });
 //]]>
-</script> 
+</script>
 <?php
 }
 
