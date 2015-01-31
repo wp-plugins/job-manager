@@ -96,7 +96,7 @@ There are 3 ways to install this plugin:
 1. A new menu `Job Manager` will appear in your Admin
 
 
-1. Checkout the current development version from http://wordpress-job-manager.googlecode.com/svn/trunk/
+1. Checkout the current development version from https://bitbucket.org/jobmanager_hp/job-manager
 1. Subscribe to the [update feed](https://bitbucket.org/jobmanager_hp) to be notified of changes
 
 
@@ -171,7 +171,8 @@ Notice the version number in brackets. This is the version series that the trans
 = Special Thanks =
 
 * Matt Wild of [Gobble Logic] (http://gobblelogic.com/), for his insurmoutable help in keeping this project alive!
-* Amy Shanks of [Strategic Recruitment Solutions] (http://www.strategicrecruitmentsolutions.com/), for her encrouragement and continuing support to Job Manager.     
+* Amy Shanks of [Strategic Recruitment Solutions] (http://www.strategicrecruitmentsolutions.com/), for her enouragement and continuing support to Job Manager.     
+* [Jet Brains](https://www.jetbrains.com/phpstorm/), for their support of Open Source projects by providing development tools and resources like PhpStorm.     
 * [Automattic](http://automattic.com/), for their support and feedback on features, design and usability.
 * All the wonderful people who've submitted bugs, feedback and feature requests - you're the people who keep us on our toes and help give this project life!
 
