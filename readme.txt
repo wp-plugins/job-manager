@@ -76,7 +76,7 @@ the interview process, Job Manager supports all the features you need to manage 
 There are 3 ways to install Job Manager:
 
 = 1. Automatic installation =
-Automatic installation is recommended, it’s the easiest option as WordPress natively handles the file
+Automatic installation is recommended. This is the easiest option as WordPress natively handles the file
 transfers and you don't even need to leave your web browser. An automatic install is really a simple 4 step process.
 
 1. Log in to your WordPress admin panel
