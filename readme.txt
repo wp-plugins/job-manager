@@ -9,7 +9,7 @@ Tags: application, applicant tracking, ats, board, candidate, candidates, career
       placement, position, positions, recruiter, recruiting, recruitment, talent
 Requires at least: 2.9
 Tested up to: 4.2.2
-Stable tag: Trunk
+Stable tag: 7.2.4
 
 A job listing and job application management plugin for WordPress.
 
