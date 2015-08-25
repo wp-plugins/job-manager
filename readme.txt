@@ -8,8 +8,8 @@ Tags: application, applicant tracking, ats, board, candidate, candidates, career
       hiring, hire, interview, interviews, job, jobs, job board, job list, job lists ,job listing, job manager, job management, job role, job search,  list, listing, manager, opportunities,
       placement, position, positions, recruiter, recruiting, recruitment, talent
 Requires at least: 2.9
-Tested up to: 4.2.2
-Stable tag: 7.2.4
+Tested up to: 4.3
+Stable tag: 7.2.5
 
 A job listing and job application management plugin for WordPress.
 
@@ -49,8 +49,6 @@ the interview process, Job Manager supports all the features you need to manage 
 
 = More information on this version of Job Manager =
  [ Read Me - Job Manager UPDATING from version 7.20 or earlier details](http://www.wp-jobmanager.com/documentation-jm/job-manager-update-from-7-20/)
-
-
 
 
 > <strong>Support</strong><br>
@@ -191,6 +189,7 @@ Notice the version number in brackets. This is the version series that the trans
 
 = Special Thanks =
 
+* George Stephanis - For his quick assist to get a fix out for the Cross-Site Scripting (XSS) bug.
 * [CSS Hero] (https://www.csshero.org),for for their support of Open Source projects by providing development tools and resources like CSS Hero.
 * Vladimir Garagulya [User Role Editor] (https://www.role-editor.com), for his support on user roles and options for Job Manager.
 * Matt Wild of [Gobble Logic] (http://gobblelogic.com/), for his insurmoutable help in keeping this project alive.
@@ -202,6 +201,10 @@ Notice the version number in brackets. This is the version series that the trans
 Print Icon by [Piotr Kwiatkowski](http://www.piotrkwiatkowski.co.uk), under a [CC BY-ND](http://creativecommons.org/licenses/by-nd/3.0/) license.
 
 == Changelog ==
+
+= 0.7.25 =
+* FIXED Cross-Site Scripting exploit (XSS)
+* Tested for WordPress 4.3
 
 = 0.7.24 =
 * Filter fix - update

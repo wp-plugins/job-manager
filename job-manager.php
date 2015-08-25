@@ -3,7 +3,7 @@
 Plugin Name: Job Manager
 Plugin URI: http://wp-jobmanager.com/
 Description: A job listing and job application management plugin for WordPress.
-Version: 0.7.24
+Version: 0.7.25
 Author: Tom Townsend
 Author URI: http://www.linkedin.com/in/thomastownsend
 Text Domain: jobman
@@ -33,7 +33,7 @@ placement, position, positions, recruiter, recruiting, recruitment, talent
 */
 
 // Version
-define( 'JOBMAN_VERSION', '0.7.24' );
+define( 'JOBMAN_VERSION', '0.7.25' );
 define( 'JOBMAN_DB_VERSION', 19 );
 
 // Define the URL to the plugin folder
